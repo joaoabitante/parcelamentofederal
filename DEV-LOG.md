@@ -1,5 +1,25 @@
 # DEV-LOG — parcelamentofederal (parcelamento.elisaofiscal.tax)
 
+## 2026-07-10 - SELIC oficial automática (v1.1.0)
+
+### Adicionado
+- `scripts/atualizar-selic.mjs`: busca a série SGS 4390 na API de dados abertos do BCB (fonte oficial, sem chave), valida cada registro e regenera `data/selic-tabela.js`. Fail-closed: HTTP != 200, JSON malformado, taxa fora de [0, 10] % a.m., série curta ou desatualizada → aborta sem tocar no arquivo.
+- `.github/workflows/atualizar-selic.yml`: cron nos dias 3 e 10 de cada mês (BCB consolida o mês anterior nos primeiros dias úteis; a 2ª execução é redundância) + `workflow_dispatch` para rodar manual. Commit do bot dispara o redeploy do Cloudflare.
+- Tabela regenerada na hora com dados oficiais: 378 meses (1995-01 a 2026-06).
+
+### Alterado
+- Histórico agora começa em 1995 (antes 2023): débitos com vencimento antigo usavam projeção da última taxa para meses PASSADOS — corrigido.
+- Valores provisórios de 2025–2026 estavam errados em vários meses (conferido contra o oficial: jul/2025 1,21→1,28; ago 1,17→1,16; out 1,22→1,28; nov 1,17→1,05; dez 1,21→1,22; e todos os de 2026). RESOLVIDA a pendência crítica da v1.0.0.
+
+### Decisões técnicas
+- **Quem busca a SELIC é o CI, nunca o navegador**: manter o anonimato do usuário era inegociável; a atualização automática acontece em build-time (Action mensal → commit → redeploy), então o produto continua estático puro e o grep de `fetch(` no código servido ao navegador segue limpo (o único `fetch` real vive em `scripts/`, que o `index.html` não referencia).
+- **Mês corrente excluído**: a API devolve o acumulado parcial do mês em andamento (ex.: 0,37 em 10/07/2026), que ainda cresce — incluir corromperia as somas. O 1% do mês de pagamento já é regra fixa do motor.
+- Valores entram no arquivo gerado só via `JSON.stringify` (sem interpolar texto bruto da API — sem injeção).
+
+### Pendências
+- Após o push, conferir na aba Actions do GitHub se o workflow aparece e rodar um `workflow_dispatch` de teste.
+- Conectar o repo no Cloudflare e vincular `parcelamento.elisaofiscal.tax` (ação humana, pendente da v1.0.1).
+
 ## 2026-07-10 - Publicação (v1.0.1)
 
 ### Alterado

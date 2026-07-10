@@ -1,0 +1,42 @@
+# Atualização automática da tabela SELIC — fonte oficial (BCB, série SGS 4390).
+#
+# Roda nos dias 3 e 10 de cada mês (o BCB consolida o mês anterior nos
+# primeiros dias úteis; a segunda execução cobre atrasos ou falha da
+# primeira). Se o script abortar (fail-closed), nada é commitado e a
+# última tabela válida continua no ar. O push do bot dispara o redeploy
+# automático no Cloudflare (repo conectado via Git).
+name: Atualizar tabela SELIC
+
+on:
+  schedule:
+    - cron: '0 12 3 * *'   # dia 3, 09:00 Brasília (12:00 UTC)
+    - cron: '0 12 10 * *'  # dia 10 (redundância)
+  workflow_dispatch: {}     # permite rodar manualmente na aba Actions
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Buscar SELIC oficial e regenerar tabela
+        run: node scripts/atualizar-selic.mjs
+
+      - name: Commitar somente se houver mudança
+        run: |
+          if git diff --quiet -- data/selic-tabela.js; then
+            echo "Tabela SELIC já está atualizada — nada a commitar."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/selic-tabela.js
+            git commit -m "chore(selic): atualiza tabela SELIC oficial (BCB SGS 4390)"
+            git push
+          fi

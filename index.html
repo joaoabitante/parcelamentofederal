@@ -322,10 +322,16 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
  * flutuante; percentuais só viram centavos com Math.round no final.
  * ===================================================================== */
 
-const APP_VERSAO = '1.0.1';
+const APP_VERSAO = '1.1.0';
 const CHAVE_TEMA = 'elisao.tema';
 const CHAVE_ULTIMO = 'elisao.ultimo-modulo';
 const CHANGELOG = [
+  {
+    versao: '1.1.0', data: '2026-07-10', itens: [
+      'Tabela SELIC agora é oficial (Banco Central, série SGS 4390) e se atualiza sozinha todo mês via GitHub Actions — o site continua 100% estático e anônimo.',
+      'Histórico completo desde janeiro/1995: débitos antigos deixam de usar projeção no passado.'
+    ]
+  },
   {
     versao: '1.0.1', data: '2026-07-10', itens: [
       'Publicação: projeto parcelamentofederal no GitHub, site em parcelamento.elisaofiscal.tax (Cloudflare).'

@@ -22,11 +22,13 @@ Abra o `index.html` direto no navegador (duplo clique) — não precisa de servi
 
 O site é 100% estático, sem build step: basta conectar este repositório do GitHub ao Cloudflare (Workers/Pages com assets estáticos, mesmo modelo do premio.elisaofiscal.net), servindo a raiz do repo, e vincular o domínio customizado `parcelamento.elisaofiscal.tax`. Nenhuma variável de ambiente, nenhum comando de build.
 
-## Atualizando a taxa SELIC
+## Taxa SELIC: oficial e automática
 
-A única "base de dados" é [data/selic-tabela.js](data/selic-tabela.js): edite o objeto `taxas` com os valores oficiais do Banco Central (série SGS 4390) e ajuste `meta.atualizadoEm`. Meses ausentes são projetados com a última taxa conhecida e sinalizados na tela.
+A única "base de dados" é [data/selic-tabela.js](data/selic-tabela.js), **gerada automaticamente** (não editar à mão): nos dias 3 e 10 de cada mês, o GitHub Actions ([atualizar-selic.yml](.github/workflows/atualizar-selic.yml)) executa [scripts/atualizar-selic.mjs](scripts/atualizar-selic.mjs), que busca a série oficial **SGS 4390** na API de dados abertos do Banco Central, valida os dados (fail-closed) e commita a tabela regenerada — o Cloudflare redeploya sozinho.
 
-> ⚠️ Os valores de 2025–2026 que acompanham o repositório são **provisórios** — confira no BCB antes de uso real. Ver pendências no [DEV-LOG.md](DEV-LOG.md).
+**Isso não quebra o anonimato:** quem consulta o BCB é o robô de CI, uma vez por mês. O navegador de quem usa o site continua sem fazer nenhuma requisição externa.
+
+A tabela cobre de janeiro/1995 até o último mês fechado; o mês corrente fica de fora (acumulado parcial) e meses futuros são projetados com a última taxa conhecida, com aviso na tela.
 
 ## Estrutura
 

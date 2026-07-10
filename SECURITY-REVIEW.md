@@ -1,6 +1,18 @@
-# SECURITY-REVIEW — elisaofiscal.tax v1.0.0 (2026-07-10)
+# SECURITY-REVIEW — parcelamentofederal
 
 Checklist de revisão (perspectiva de dev sênior). Qualquer ❌ bloqueia release.
+
+## v1.1.0 (2026-07-10) — pipeline automático da SELIC
+
+- ✅ **Anonimato do usuário preservado** — o navegador continua sem fazer nenhuma requisição externa; o único `fetch` real do repositório está em `scripts/atualizar-selic.mjs`, que roda apenas no GitHub Actions e NÃO é referenciado pelo `index.html`. A regra de grep passa a ser: nenhum `fetch(`/`XMLHttpRequest`/`sendBeacon` em arquivos carregados pelo navegador (`index.html`, `lib/`, `modules/`, `data/`).
+- ✅ **Fonte oficial e primária** — API de dados abertos do Banco Central (`api.bcb.gov.br`, série SGS 4390), HTTPS, sem chave, sem intermediário/terceiro.
+- ✅ **Fail-closed** — resposta inesperada (HTTP != 200, JSON inválido, data fora do padrão, taxa fora de [0, 10] % a.m., série curta ou desatualizada há mais de 3 meses) aborta com exit 1 sem tocar no arquivo; a última tabela válida permanece no ar.
+- ✅ **Sem injeção no arquivo gerado** — valores da API só entram via `JSON.stringify`; nenhum texto bruto da resposta é interpolado no `.js`.
+- ✅ **Mês corrente excluído** — a API retorna acumulado parcial do mês em andamento; o script grava somente meses fechados (correção de cálculo).
+- ✅ **Permissões mínimas no CI** — workflow com `permissions: contents: write` apenas; sem secrets (API pública); commit assinado como `github-actions[bot]`; versões de actions fixadas em major estável (`checkout@v4`, `setup-node@v4`).
+- ✅ **Pendência crítica da v1.0.0 RESOLVIDA** — valores provisórios de 2025–2026 substituídos pelos oficiais do BCB (378 meses, 1995-01 a 2026-06, conferidos por amostragem contra a série publicada).
+
+## v1.0.0 (2026-07-10) — release inicial
 
 ## 6.1 Privacidade / Anonimato
 
