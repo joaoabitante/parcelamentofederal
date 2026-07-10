@@ -1,0 +1,34 @@
+# SECURITY-REVIEW — elisaofiscal.tax v1.0.0 (2026-07-10)
+
+Checklist de revisão (perspectiva de dev sênior). Qualquer ❌ bloqueia release.
+
+## 6.1 Privacidade / Anonimato
+
+- ✅ **Nenhuma chamada de rede em tempo de execução** — grep por `fetch(`, `XMLHttpRequest`, `sendBeacon`, `<script src="http` no código: zero ocorrências fora de comentários/documentação. Todos os `<script src>` apontam para arquivos locais relativos.
+- ✅ **Nenhum identificador pessoal persistido** — não há campo de nome/CPF/CNPJ no sistema. `localStorage` guarda apenas `elisao.tema` e `elisao.ultimo-modulo`; valores e datas da simulação vivem só em memória e somem ao fechar a aba.
+- ✅ **Nenhum analytics/pixel/terceiro embutido** — zero scripts externos, zero cookies, zero iframes.
+- ⚠️ **Link externo de doação (LiveTip) no rodapé** — navegação só ocorre por clique explícito do usuário, com `rel="noopener noreferrer"`; nenhum dado é anexado à URL. Aceito por ser marca registrada dos projetos do autor; remover se quiser anonimato absoluto até no referer de saída.
+
+## 6.2 Segurança de código (client-side)
+
+- ✅ **Sem `eval`, `Function()` ou `innerHTML` com dado do usuário** — todo DOM dinâmico é criado via `createElement` + `textContent` (helper `el()`).
+- ✅ **Inputs numéricos validados** — parse próprio de moeda pt-BR com regex estrita; rejeita `NaN`, negativos e valores acima de R$ 100 bi (`Number.isSafeInteger`); nº de parcelas validado como inteiro em [1, teto legal]; multa limitada a [0, 20]; extras limitados a [min, max] do módulo; datas validadas (inclusive dias inexistentes, ex.: 31/02).
+- ✅ **Nenhum `mailto:`/`action=` para servidor externo** — o único form tem `submit` interceptado com `preventDefault()`; exportação é `window.print()` local.
+
+## 6.3 Correção dos cálculos
+
+- ✅ **Fórmulas com base legal em comentário** — multa: art. 61, Lei 9.430/96; juros: Lei 9.065/95 art. 13, Lei 9.430/96 art. 61 § 3º, Lei 10.522/2002 art. 13 § único; limites por módulo citados em cada arquivo de `modules/`.
+- ✅ **Casos de borda testados** — parcela abaixo do mínimo (erro com sugestão do nº máximo), parcelas acima do teto (erro), referência anterior ao vencimento (erro), pagamento no mesmo mês do vencimento (juros 0, só multa), IRPF < R$ 100 (quota única obrigatória), valor vazio/negativo/não numérico (erro).
+- ✅ **Arredondamento monetário** — centavos inteiros em todo o motor; `Math.round` apenas na aplicação de percentuais; última parcela absorve o resto da divisão (total fecha exato); multa calculada em centésimos inteiros (33/dia).
+- ⚠️ **Tabela SELIC com valores provisórios (2025–2026)** — cálculo correto, mas insumo precisa de conferência oficial (BCB). Bloqueia divulgação pública, não o uso em desenvolvimento. Ver DEV-LOG.
+- ⚠️ **Multa em dias corridos** (lei conta a partir do 1º dia útil) — pode superestimar 1–2 dias; campo editável na UI compensa. Documentado na lib.
+
+## 6.4 UX de confiança
+
+- ✅ **Disclaimers visíveis** — barra fixa ("não substitui o cálculo oficial"), rodapé com "o que esta ferramenta NÃO é" e rodapé de cada simulação impressa.
+- ✅ **Fonte/data da tabela SELIC exibida** — no rodapé e em todo resultado (aviso com data de atualização); modal "Ver tabela SELIC local" mostra todos os valores.
+- ✅ **Botão "Limpar dados locais" funcional e visível** — no topo de todas as telas; informa exatamente o que era guardado.
+
+## Veredicto
+
+**Liberado para uso local/desenvolvimento.** Release público condicionado às pendências ⚠️ de conferência da tabela SELIC e dos valores mínimos vigentes (ver DEV-LOG.md).

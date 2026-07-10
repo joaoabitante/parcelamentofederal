@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Simulador gratuito e 100% anônimo de parcelamentos de tributos federais (PGFN, e-CAC, Simples Nacional, Lucro Presumido e IRPF). Tudo roda no seu navegador — nenhum dado é enviado a servidor algum.">
+<title>elisaofiscal.tax — simulador anônimo de parcelamentos federais</title>
+<style>
+/* ============ tema (claro/escuro) ============ */
+:root {
+  --fundo: #f5f7f9;
+  --superficie: #ffffff;
+  --texto: #1a2330;
+  --texto-suave: #4a5768;
+  --primaria: #0b5d3b;
+  --primaria-texto: #ffffff;
+  --borda: #d4dbe3;
+  --destaque: #eaf5ef;
+  --aviso-fundo: #fdf3dd;
+  --aviso-borda: #e0b64f;
+  --erro-fundo: #fdeaea;
+  --erro-borda: #d05252;
+  --erro-texto: #8f1f1f;
+  --sombra: 0 1px 4px rgba(15, 30, 45, .08);
+}
+html[data-tema="escuro"] {
+  --fundo: #10161d;
+  --superficie: #1a232d;
+  --texto: #e8edf2;
+  --texto-suave: #9fadbc;
+  --primaria: #2e9e6b;
+  --primaria-texto: #08130d;
+  --borda: #2e3b48;
+  --destaque: #16281f;
+  --aviso-fundo: #2e2712;
+  --aviso-borda: #a3842e;
+  --erro-fundo: #331616;
+  --erro-borda: #b05050;
+  --erro-texto: #f0b5b5;
+  --sombra: 0 1px 4px rgba(0, 0, 0, .4);
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-tema="claro"]) {
+    --fundo: #10161d; --superficie: #1a232d; --texto: #e8edf2;
+    --texto-suave: #9fadbc; --primaria: #2e9e6b; --primaria-texto: #08130d;
+    --borda: #2e3b48; --destaque: #16281f;
+    --aviso-fundo: #2e2712; --aviso-borda: #a3842e;
+    --erro-fundo: #331616; --erro-borda: #b05050; --erro-texto: #f0b5b5;
+    --sombra: 0 1px 4px rgba(0, 0, 0, .4);
+  }
+}
+
+/* ============ base (mobile-first) ============ */
+* { box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.55;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+main { flex: 1; width: 100%; max-width: 60rem; margin: 0 auto; padding: 0 1rem 2rem; }
+h1 { font-size: 1.35rem; margin: 0; }
+h2 { font-size: 1.15rem; margin: 1.2rem 0 .6rem; }
+h3 { font-size: 1rem; margin: 1rem 0 .4rem; }
+a { color: var(--primaria); }
+.pular {
+  position: absolute; left: -999px; top: 0; background: var(--primaria);
+  color: var(--primaria-texto); padding: .5rem 1rem; z-index: 10;
+}
+.pular:focus { left: 0; }
+
+/* ============ topo ============ */
+header.topo {
+  background: var(--superficie); border-bottom: 1px solid var(--borda);
+  padding: .8rem 1rem; display: flex; flex-wrap: wrap; gap: .6rem;
+  align-items: center; justify-content: space-between;
+}
+.marca .dominio { color: var(--primaria); }
+.marca .tagline { margin: 0; font-size: .8rem; color: var(--texto-suave); }
+.acoes-topo { display: flex; gap: .5rem; }
+.selo {
+  background: var(--destaque); border-bottom: 1px solid var(--borda);
+  text-align: center; font-size: .85rem; padding: .45rem .8rem;
+}
+
+/* ============ botões e campos ============ */
+button {
+  font: inherit; cursor: pointer; border-radius: .5rem;
+  border: 1px solid var(--borda); background: var(--superficie);
+  color: var(--texto); padding: .55rem 1rem; min-height: 44px;
+}
+button.primario {
+  background: var(--primaria); color: var(--primaria-texto);
+  border-color: var(--primaria); font-weight: 600;
+}
+button:focus-visible, a:focus-visible, input:focus-visible, .cartao-modulo:focus-visible {
+  outline: 3px solid var(--primaria); outline-offset: 2px;
+}
+label { display: block; font-weight: 600; margin-bottom: .25rem; }
+.ajuda { font-weight: 400; font-size: .82rem; color: var(--texto-suave); display: block; }
+input[type="text"], input[type="number"], input[type="date"] {
+  font: inherit; width: 100%; padding: .55rem .7rem; min-height: 44px;
+  border: 1px solid var(--borda); border-radius: .5rem;
+  background: var(--superficie); color: var(--texto);
+}
+.campo { margin-bottom: 1rem; }
+fieldset {
+  border: 1px solid var(--borda); border-radius: .6rem;
+  margin: 0 0 1rem; padding: .6rem .9rem .8rem;
+}
+legend { font-weight: 600; padding: 0 .3rem; }
+.grupo-radios { display: flex; flex-wrap: wrap; gap: .4rem .9rem; }
+.grupo-radios label { display: flex; align-items: center; gap: .4rem; font-weight: 400; margin: 0; min-height: 44px; }
+
+/* ============ etapas ============ */
+.passos { margin: 1rem 0; }
+.passos ol { list-style: none; display: flex; gap: .4rem; margin: 0; padding: 0; flex-wrap: wrap; }
+.passos li {
+  font-size: .82rem; padding: .3rem .7rem; border-radius: 1rem;
+  border: 1px solid var(--borda); color: var(--texto-suave); background: var(--superficie);
+}
+.passos li[aria-current="step"] {
+  background: var(--primaria); color: var(--primaria-texto);
+  border-color: var(--primaria); font-weight: 600;
+}
+.cartoes { display: grid; gap: .8rem; grid-template-columns: 1fr; }
+@media (min-width: 40rem) { .cartoes { grid-template-columns: 1fr 1fr; } }
+.cartao-modulo {
+  text-align: left; padding: 1rem; border-radius: .8rem;
+  box-shadow: var(--sombra); display: block; width: 100%;
+}
+.cartao-modulo:hover { border-color: var(--primaria); }
+.cartao-modulo .nome { font-weight: 700; font-size: 1.02rem; }
+.cartao-modulo .desc { font-size: .87rem; color: var(--texto-suave); margin-top: .2rem; }
+.badge-ultimo {
+  font-size: .72rem; background: var(--destaque); color: var(--primaria);
+  border-radius: .8rem; padding: .1rem .55rem; margin-left: .4rem;
+  border: 1px solid var(--primaria);
+}
+
+/* ============ resultados ============ */
+.painel {
+  background: var(--superficie); border: 1px solid var(--borda);
+  border-radius: .8rem; padding: 1rem; margin-bottom: 1rem; box-shadow: var(--sombra);
+}
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.tabela-rolagem { overflow-x: auto; }
+th, td { text-align: right; padding: .45rem .6rem; border-bottom: 1px solid var(--borda); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { border-bottom: 2px solid var(--primaria); }
+tr.total td { font-weight: 700; border-top: 2px solid var(--primaria); }
+.resumo dt { color: var(--texto-suave); font-size: .85rem; }
+.resumo dd { margin: 0 0 .6rem; font-size: 1.05rem; font-weight: 600; }
+.resumo .grande dd { font-size: 1.45rem; color: var(--primaria); }
+ul.avisos { margin: 0; padding: 0; list-style: none; }
+ul.avisos li {
+  background: var(--aviso-fundo); border-left: 4px solid var(--aviso-borda);
+  padding: .5rem .8rem; margin-bottom: .5rem; border-radius: 0 .4rem .4rem 0; font-size: .88rem;
+}
+ul.erros { margin: 0 0 1rem; padding: 0; list-style: none; }
+ul.erros li {
+  background: var(--erro-fundo); border-left: 4px solid var(--erro-borda);
+  color: var(--erro-texto); padding: .5rem .8rem; margin-bottom: .5rem;
+  border-radius: 0 .4rem .4rem 0; font-weight: 600;
+}
+.acoes { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+.bases-legais { font-size: .8rem; color: var(--texto-suave); }
+.bases-legais ul { margin: .2rem 0 0; padding-left: 1.2rem; }
+.destaque-fonte { font-size: .82rem; color: var(--texto-suave); }
+#status-app { min-height: 1.4rem; font-size: .85rem; color: var(--primaria); font-weight: 600; }
+
+/* ============ rodapé ============ */
+.barra-disclaimer {
+  position: sticky; bottom: 0; background: var(--superficie);
+  border-top: 1px solid var(--borda); text-align: center;
+  font-size: .8rem; padding: .45rem .8rem; color: var(--texto-suave);
+}
+footer.rodape {
+  background: var(--superficie); border-top: 1px solid var(--borda);
+  padding: 1.2rem 1rem 4rem; font-size: .85rem; color: var(--texto-suave);
+}
+footer.rodape .interno { max-width: 60rem; margin: 0 auto; display: grid; gap: .5rem; }
+footer.rodape a { white-space: nowrap; }
+
+/* ============ diálogos ============ */
+dialog {
+  border: 1px solid var(--borda); border-radius: .8rem; padding: 1.2rem;
+  max-width: 34rem; width: calc(100% - 2rem);
+  background: var(--superficie); color: var(--texto);
+  max-height: 85vh; overflow: auto;
+}
+dialog::backdrop { background: rgba(0, 0, 0, .55); }
+
+/* ============ impressão ============ */
+@media print {
+  header.topo .acoes-topo, .passos, .selo, .acoes, .barra-disclaimer,
+  footer.rodape .so-tela, .nao-imprimir { display: none !important; }
+  body { background: #fff; color: #000; }
+  .painel { box-shadow: none; border-color: #999; break-inside: avoid; }
+  a { color: #000; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topo">
+  <div class="marca">
+    <h1>elisaofiscal<span class="dominio">.tax</span></h1>
+    <p class="tagline">Simulador anônimo de parcelamentos de tributos federais</p>
+  </div>
+  <div class="acoes-topo nao-imprimir">
+    <button type="button" id="btn-tema" aria-pressed="false">🌙 Tema escuro</button>
+    <button type="button" id="btn-limpar-dados">🧹 Limpar dados locais</button>
+  </div>
+</header>
+
+<div class="selo">🔒 <strong>100% anônimo:</strong> tudo é calculado no seu navegador. Nenhum dado é enviado, salvo ou rastreado.</div>
+
+<main id="conteudo">
+  <p id="status-app" role="status" aria-live="polite"></p>
+
+  <nav class="passos" aria-label="Etapas da simulação">
+    <ol>
+      <li id="passo-1">1 · Tributo</li>
+      <li id="passo-2">2 · Valores</li>
+      <li id="passo-3">3 · Resultado</li>
+    </ol>
+  </nav>
+
+  <!-- ETAPA 1: escolher módulo -->
+  <section id="etapa-1" aria-labelledby="titulo-etapa-1">
+    <h2 id="titulo-etapa-1">Qual débito você quer simular?</h2>
+    <div class="cartoes" id="lista-modulos"></div>
+  </section>
+
+  <!-- ETAPA 2: formulário -->
+  <section id="etapa-2" hidden aria-labelledby="titulo-etapa-2">
+    <h2 id="titulo-etapa-2">Dados do débito</h2>
+    <form id="form-simulacao" novalidate>
+      <div id="form-campos"></div>
+      <ul class="erros" id="lista-erros" role="alert" hidden></ul>
+      <div class="acoes">
+        <button type="button" id="btn-voltar-1">← Trocar tributo</button>
+        <button type="submit" class="primario">Calcular parcelamento →</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ETAPA 3: resultado -->
+  <section id="etapa-3" hidden aria-labelledby="titulo-etapa-3" aria-live="polite">
+    <h2 id="titulo-etapa-3">Resultado da simulação</h2>
+    <div id="resultado"></div>
+    <div class="acoes nao-imprimir">
+      <button type="button" class="primario" id="btn-imprimir">🖨️ Exportar / Imprimir (PDF local)</button>
+      <button type="button" id="btn-voltar-2">← Ajustar valores</button>
+      <button type="button" id="btn-nova">Nova simulação</button>
+    </div>
+  </section>
+</main>
+
+<div class="barra-disclaimer" role="note">
+  Ferramenta de simulação independente. Não substitui o cálculo oficial da Receita Federal/PGFN.
+</div>
+
+<footer class="rodape">
+  <div class="interno">
+    <p><strong>O que esta ferramenta NÃO é:</strong> não é parcelamento oficial, não substitui o e-CAC ou o Regularize reais e não envia nenhum dado à Receita Federal, à PGFN ou a qualquer terceiro. Os resultados são estimativas para planejamento.</p>
+    <p class="destaque-fonte" id="info-selic"></p>
+    <p class="so-tela">
+      <a href="#" id="link-selic">📈 Ver tabela SELIC local</a> ·
+      <a href="#" id="link-log">📋 <span id="versao-app"></span> · atualizações</a> ·
+      <a href="https://livetip.gg/libertcontador" target="_blank" rel="noopener noreferrer">☕ Apoie via LiveTip</a>
+    </p>
+    <p>Feito para pessoas físicas e contadores. Código aberto para auditoria — sem cookies, sem analytics, sem rede.</p>
+  </div>
+</footer>
+
+<!-- Modal: tabela SELIC -->
+<dialog id="modal-selic" aria-labelledby="titulo-modal-selic">
+  <h2 id="titulo-modal-selic">Tabela SELIC local</h2>
+  <div id="conteudo-modal-selic"></div>
+  <p class="destaque-fonte">Para atualizar, edite o arquivo <code>data/selic-tabela.js</code> — nenhuma chamada de rede é feita, por design.</p>
+  <div class="acoes"><button type="button" class="primario" data-fechar>Fechar</button></div>
+</dialog>
+
+<!-- Modal: log de atualizações -->
+<dialog id="modal-log" aria-labelledby="titulo-modal-log">
+  <h2 id="titulo-modal-log">📋 Log de atualizações</h2>
+  <div id="conteudo-modal-log"></div>
+  <div class="acoes"><button type="button" class="primario" data-fechar>Fechar</button></div>
+</dialog>
+
+<!-- dados e bibliotecas locais (scripts clássicos: funcionam via file://, sem rede) -->
+<script src="data/selic-tabela.js"></script>
+<script src="lib/calculo-juros-selic.js"></script>
+<script src="lib/calculo-multa-mora.js"></script>
+<script src="modules/regularize.js"></script>
+<script src="modules/ecac.js"></script>
+<script src="modules/simples-nacional.js"></script>
+<script src="modules/lucro-presumido.js"></script>
+<script src="modules/irpf.js"></script>
+
+<script>
+(function () {
+'use strict';
+
+/* =====================================================================
+ * elisaofiscal.tax — aplicação principal
+ * Privacidade por design:
+ *   - nenhuma requisição de rede (não há fetch/XMLHttpRequest/sendBeacon);
+ *   - localStorage guarda APENAS preferências de interface (tema e último
+ *     módulo aberto) — nunca valores, datas ou qualquer dado da simulação;
+ *   - todo conteúdo dinâmico é inserido via textContent/createElement
+ *     (nunca innerHTML com dado do usuário) para eliminar XSS.
+ * Dinheiro é tratado em CENTAVOS (inteiros) para evitar erro de ponto
+ * flutuante; percentuais só viram centavos com Math.round no final.
+ * ===================================================================== */
+
+const APP_VERSAO = '1.0.0';
+const CHAVE_TEMA = 'elisao.tema';
+const CHAVE_ULTIMO = 'elisao.ultimo-modulo';
+const CHANGELOG = [
+  {
+    versao: '1.0.0', data: '2026-07-10', itens: [
+      'Primeira versão: módulos Regularize/PGFN, e-CAC, Simples Nacional, Lucro Presumido e IRPF.',
+      'Cálculo de multa de mora (0,33%/dia, teto 20%) e juros SELIC com tabela local editável.',
+      'Comparativo entre quantidades de parcelas e exportação por impressão local.'
+    ]
+  }
+];
+
+const $ = (sel, ctx) => (ctx || document).querySelector(sel);
+
+/** Cria elemento com atributos e filhos — dados do usuário sempre viram
+ *  nós de texto (textContent), nunca HTML. */
+function el(tag, attrs, ...filhos) {
+  const n = document.createElement(tag);
+  if (attrs) {
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v === null || v === undefined) continue;
+      if (k === 'class') n.className = v;
+      else if (k.startsWith('on') && typeof v === 'function') n.addEventListener(k.slice(2), v);
+      else n.setAttribute(k, v);
+    }
+  }
+  for (const f of filhos.flat(Infinity)) {
+    if (f === null || f === undefined || f === false) continue;
+    n.append(f instanceof Node ? f : String(f));
+  }
+  return n;
+}
+
+/* ---------------- dinheiro (centavos inteiros) ---------------- */
+const fmtBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+function dinheiro(centavos) { return fmtBRL.format(centavos / 100); }
+
+/** "1.234,56" | "1234,56" | "1234.56" | "R$ 1.234,56" → centavos (int) ou null */
+function parseDinheiro(texto) {
+  if (typeof texto !== 'string') return null;
+  let s = texto.trim().replace(/^R\$\s*/i, '').replace(/\s+/g, '');
+  if (!s) return null;
+  if (s.includes(',')) {
+    s = s.replace(/\./g, '').replace(',', '.');   // padrão brasileiro
+  } else {
+    const p = s.split('.');
+    if (p.length > 2 || (p.length === 2 && p[1].length === 3)) {
+      s = s.replace(/\./g, '');                    // pontos de milhar
+    }
+  }
+  if (!/^\d+(\.\d{1,2})?$/.test(s)) return null;
+  const centavos = Math.round(Number(s) * 100);
+  if (!Number.isSafeInteger(centavos) || centavos < 0) return null;
+  return centavos;
+}
+
+function pct(v) {
+  return v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+}
+
+/* ---------------- datas ---------------- */
+function parseDataInput(valor) { // "AAAA-MM-DD" do <input type=date>
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(valor || '');
+  if (!m) return null;
+  const d = { ano: +m[1], mes: +m[2], dia: +m[3] };
+  const teste = new Date(Date.UTC(d.ano, d.mes - 1, d.dia));
+  if (teste.getUTCFullYear() !== d.ano || teste.getUTCMonth() !== d.mes - 1 || teste.getUTCDate() !== d.dia) return null;
+  if (d.ano < 1995 || d.ano > 2100) return null; // SELIC como juros de tributo existe desde 1995
+  return d;
+}
+function hojeISO() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+const NOMES_MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+function rotuloMes(ym) { return NOMES_MES[ym.mes - 1] + '/' + ym.ano; }
+function dataBR(d) {
+  return String(d.dia).padStart(2, '0') + '/' + String(d.mes).padStart(2, '0') + '/' + d.ano;
+}
+function antes(a, b) { // a < b ?
+  return Date.UTC(a.ano, a.mes - 1, a.dia) < Date.UTC(b.ano, b.mes - 1, b.dia);
+}
+
+/* =====================================================================
+ * MOTOR DE CÁLCULO (compartilhado pelos 5 módulos)
+ * ===================================================================== */
+
+/**
+ * @returns {{erros:string[], avisos:string[], breakdown:Array, consolidado:number,
+ *            parcelas:Array, totalPago:number, jurosParcelamento:number,
+ *            projecaoMeses:number}|{erros:string[]}}
+ */
+function calcular(mod, entradas, nParcelas) {
+  const erros = [];
+  const avisos = [];
+  const { valorCentavos, venc, ref, multaPercent, extras, perfil } = entradas;
+
+  // ---- validações de entrada (segurança: nada de NaN/negativo/overflow) ----
+  if (valorCentavos === null || !Number.isSafeInteger(valorCentavos)) {
+    erros.push('Informe um valor de débito válido (ex.: 12.345,67).');
+  } else if (valorCentavos <= 0) {
+    erros.push('O valor do débito precisa ser maior que zero.');
+  } else if (valorCentavos > 1e13) { // R$ 100 bilhões: limite de sanidade
+    erros.push('Valor acima do limite de simulação (R$ 100 bilhões).');
+  }
+  if (!venc) erros.push('Informe uma data de vencimento válida.');
+  if (mod.usaReferencia !== false && !ref) erros.push('Informe uma data de referência válida.');
+  if (!Number.isInteger(nParcelas) || nParcelas < 1) {
+    erros.push('O número de parcelas precisa ser um inteiro maior ou igual a 1.');
+  } else if (nParcelas > mod.maxParcelas) {
+    erros.push('Esta modalidade permite no máximo ' + mod.maxParcelas + ' parcelas (teto legal).');
+  }
+  if (mod.moraAplicavel && (!Number.isFinite(multaPercent) || multaPercent < 0 || multaPercent > 20)) {
+    erros.push('A multa de mora deve estar entre 0% e 20% (teto do art. 61 da Lei 9.430/96).');
+  }
+  if (venc && ref && mod.moraAplicavel && antes(ref, venc)) {
+    erros.push('A data de referência não pode ser anterior ao vencimento. Para débito ainda não vencido não há multa/juros de mora.');
+  }
+  if (erros.length) return { erros };
+
+  const dataConsolidacao = mod.usaReferencia === false ? venc : ref;
+  const ymVenc = { ano: venc.ano, mes: venc.mes };
+  const ymRef = { ano: dataConsolidacao.ano, mes: dataConsolidacao.mes };
+
+  // ---- consolidação: principal + multa + juros (+ acréscimos do módulo) ----
+  let projecaoMeses = 0;
+  const principal = valorCentavos;
+  const multaC = mod.moraAplicavel ? Math.round(principal * multaPercent / 100) : 0;
+  let jurosPercent = 0;
+  if (mod.moraAplicavel) {
+    const j = window.CalcSelic.jurosMoraPercent(ymVenc, ymRef);
+    jurosPercent = j.percent;
+    projecaoMeses = Math.max(projecaoMeses, j.mesesProjetados);
+  }
+  const jurosC = Math.round(principal * jurosPercent / 100);
+  const subtotal = principal + multaC + jurosC;
+
+  const breakdown = [
+    { rotulo: 'Valor original do débito', valor: principal },
+    { rotulo: 'Multa de mora (' + pct(mod.moraAplicavel ? multaPercent : 0) + ')', valor: multaC },
+    { rotulo: 'Juros SELIC até a consolidação (' + pct(jurosPercent) + ')', valor: jurosC }
+  ];
+
+  let consolidado = subtotal;
+  for (const campo of (mod.camposExtras || [])) {
+    const v = extras[campo.id];
+    if (!Number.isFinite(v) || v < campo.min || v > campo.max) {
+      return { erros: ['O campo "' + campo.label + '" deve estar entre ' + campo.min + ' e ' + campo.max + '.'] };
+    }
+    // acréscimos do módulo (ex.: encargo legal) incidem sobre o subtotal
+    const extraC = Math.round(subtotal * v / 100);
+    consolidado += extraC;
+    breakdown.push({ rotulo: campo.label.replace(' (%)', '') + ' (' + pct(v) + ')', valor: extraC });
+  }
+
+  // ---- regras de piso da modalidade ----
+  const perfilObj = mod.perfis.find(p => p.id === perfil) || mod.perfis[0];
+  const minimo = perfilObj.parcelaMinimaCentavos;
+  const baseParcela = Math.floor(consolidado / nParcelas);
+  if (baseParcela < minimo) {
+    const nMax = Math.max(1, Math.floor(consolidado / minimo));
+    return {
+      erros: ['Com ' + nParcelas + ' parcelas, cada uma ficaria abaixo do mínimo de ' + dinheiro(minimo) +
+        ' para ' + perfilObj.label + '. Para este débito o máximo é de ' + nMax + ' parcela(s).']
+    };
+  }
+  if (mod.valorMinimoParcelamentoCentavos && consolidado < mod.valorMinimoParcelamentoCentavos && nParcelas > 1) {
+    return {
+      erros: ['Imposto menor que ' + dinheiro(mod.valorMinimoParcelamentoCentavos) +
+        ' deve ser pago em quota única (selecione 1 parcela).']
+    };
+  }
+
+  // ---- prestações: base fixa + SELIC individual por mês de pagamento ----
+  // (Lei 10.522/2002, art. 13, § único — ver lib/calculo-juros-selic.js)
+  const parcelas = [];
+  let saldo = consolidado;
+  let totalPago = 0;
+  for (let k = 1; k <= nParcelas; k++) {
+    // última parcela absorve o resto da divisão para fechar o total exato
+    const base = (k === nParcelas) ? saldo : baseParcela;
+    const jp = window.CalcSelic.jurosParcelaPercent(ymRef, k);
+    projecaoMeses = Math.max(projecaoMeses, jp.mesesProjetados);
+    const valor = base + Math.round(base * jp.percent / 100);
+    totalPago += valor;
+    saldo -= base;
+    parcelas.push({ k, mes: jp.mesPagamento, jurosPercent: jp.percent, valor, saldoApos: saldo });
+  }
+
+  // ---- avisos ----
+  for (const a of (mod.avisosFixos || [])) avisos.push(a);
+  if (projecaoMeses > 0) {
+    const u = window.CalcSelic.ultimaConhecida();
+    avisos.push('Projeção: ' + projecaoMeses + ' mês(es) sem taxa na tabela local foram estimados com a última SELIC conhecida (' +
+      pct(u ? u.taxa : 0) + '). Os valores reais dependerão da SELIC futura.');
+  }
+  if (mod.moraAplicavel && multaPercent >= 20) {
+    avisos.push('Multa de mora no teto legal de 20% (art. 61, § 2º, Lei 9.430/96).');
+  }
+  const meta = window.SELIC_TABELA.meta;
+  avisos.push('Tabela SELIC local atualizada em ' + meta.atualizadoEm + ' — confira sempre a taxa vigente no site do Banco Central.');
+
+  return {
+    erros: [], avisos, breakdown, consolidado, parcelas, totalPago,
+    jurosParcelamento: totalPago - consolidado, projecaoMeses,
+    minimoParcela: minimo, perfilLabel: perfilObj.label
+  };
+}
+
+/* =====================================================================
+ * INTERFACE — wizard de 3 etapas
+ * ===================================================================== */
+const MODULOS = window.ELISAO_MODULOS || [];
+const estado = { modulo: null, multaEditada: false, ultimoResultado: null };
+
+function irParaEtapa(n) {
+  for (const i of [1, 2, 3]) {
+    const sec = $('#etapa-' + i);
+    sec.hidden = (i !== n);
+    const passo = $('#passo-' + i);
+    if (i === n) passo.setAttribute('aria-current', 'step');
+    else passo.removeAttribute('aria-current');
+  }
+  const alvo = $('#etapa-' + n).querySelector('h2');
+  if (alvo) { alvo.setAttribute('tabindex', '-1'); alvo.focus(); }
+  window.scrollTo({ top: 0 });
+}
+
+/* ---------- etapa 1: cartões de módulo ---------- */
+function montarCartoes() {
+  const lista = $('#lista-modulos');
+  lista.textContent = '';
+  let ultimo = null;
+  try { ultimo = localStorage.getItem(CHAVE_ULTIMO); } catch (e) { /* sem localStorage */ }
+  for (const mod of MODULOS) {
+    const btn = el('button', { type: 'button', class: 'cartao-modulo', onclick: () => abrirModulo(mod) },
+      el('div', { class: 'nome' }, mod.icone + ' ' + mod.nome,
+        (ultimo === mod.id) ? el('span', { class: 'badge-ultimo' }, 'último usado') : null),
+      el('div', { class: 'desc' }, mod.descricao)
+    );
+    lista.append(btn);
+  }
+}
+
+/* ---------- etapa 2: formulário dinâmico ---------- */
+function abrirModulo(mod) {
+  estado.modulo = mod;
+  estado.multaEditada = false;
+  try { localStorage.setItem(CHAVE_ULTIMO, mod.id); } catch (e) { /* preferência opcional */ }
+
+  $('#titulo-etapa-2').textContent = mod.icone + ' ' + mod.nome + ' — dados do débito';
+  const campos = $('#form-campos');
+  campos.textContent = '';
+
+  // perfil (PF/PJ/MEI…)
+  if (mod.perfis.length > 1) {
+    campos.append(el('fieldset', null,
+      el('legend', null, 'Perfil do contribuinte'),
+      el('div', { class: 'grupo-radios' },
+        mod.perfis.map((p, i) => el('label', null,
+          el('input', { type: 'radio', name: 'perfil', value: p.id, checked: i === 0 ? '' : null }),
+          p.label + ' (parcela mínima ' + dinheiro(p.parcelaMinimaCentavos) + ')'
+        ))
+      )
+    ));
+  }
+
+  campos.append(el('div', { class: 'campo' },
+    el('label', { for: 'f-valor' }, 'Valor original do débito (R$)',
+      el('span', { class: 'ajuda' }, 'Sem multa e sem juros — os acréscimos são calculados pela ferramenta.')),
+    el('input', { id: 'f-valor', type: 'text', inputmode: 'decimal', placeholder: 'ex.: 12.345,67', autocomplete: 'off' })
+  ));
+
+  campos.append(el('div', { class: 'campo' },
+    el('label', { for: 'f-venc' }, mod.labelVencimento || 'Data de vencimento original'),
+    el('input', { id: 'f-venc', type: 'date' })
+  ));
+
+  if (mod.usaReferencia !== false) {
+    campos.append(el('div', { class: 'campo' },
+      el('label', { for: 'f-ref' }, 'Data de referência do cálculo',
+        el('span', { class: 'ajuda' }, 'Data em que o parcelamento seria consolidado (hoje, por padrão).')),
+      el('input', { id: 'f-ref', type: 'date', value: hojeISO() })
+    ));
+  }
+
+  campos.append(el('div', { class: 'campo' },
+    el('label', { for: 'f-parcelas' }, 'Número de parcelas desejado',
+      el('span', { class: 'ajuda' }, 'Limite legal desta modalidade: ' + mod.maxParcelas + ' parcela(s).')),
+    el('input', { id: 'f-parcelas', type: 'number', min: '1', max: String(mod.maxParcelas), step: '1', value: String(Math.min(12, mod.maxParcelas)) })
+  ));
+
+  if (mod.moraAplicavel) {
+    campos.append(el('div', { class: 'campo' },
+      el('label', { for: 'f-multa' }, 'Multa de mora (%)',
+        el('span', { class: 'ajuda', id: 'multa-sugestao' }, '')),
+      el('input', { id: 'f-multa', type: 'number', min: '0', max: '20', step: '0.01', value: '0' })
+    ));
+  }
+
+  for (const extra of (mod.camposExtras || [])) {
+    campos.append(el('div', { class: 'campo' },
+      el('label', { for: 'f-extra-' + extra.id }, extra.label,
+        el('span', { class: 'ajuda' }, extra.ajuda)),
+      el('input', { id: 'f-extra-' + extra.id, type: 'number', min: String(extra.min), max: String(extra.max), step: '0.01', value: String(extra.padrao) })
+    ));
+  }
+
+  campos.append(el('p', { class: 'bases-legais' }, 'Base legal desta modalidade:',
+    el('ul', null, mod.basesLegais.map(b => el('li', null, b)))));
+
+  // sugestão automática de multa (0,33%/dia, teto 20%) — editável pelo usuário
+  if (mod.moraAplicavel) {
+    const inputMulta = $('#f-multa');
+    const atualizar = () => {
+      const venc = parseDataInput($('#f-venc').value);
+      const refEl = $('#f-ref');
+      const ref = refEl ? parseDataInput(refEl.value) : venc;
+      if (!venc || !ref) return;
+      const sugerida = window.CalcMulta.multaMoraPercent(venc, ref);
+      $('#multa-sugestao').textContent =
+        'Sugerida: ' + pct(sugerida) + ' (0,33% por dia de atraso, teto 20% — art. 61, Lei 9.430/96). Você pode editar.';
+      if (!estado.multaEditada) inputMulta.value = String(sugerida);
+    };
+    inputMulta.addEventListener('input', () => { estado.multaEditada = true; });
+    $('#f-venc').addEventListener('change', atualizar);
+    const refEl = $('#f-ref');
+    if (refEl) refEl.addEventListener('change', atualizar);
+  }
+
+  $('#lista-erros').hidden = true;
+  irParaEtapa(2);
+}
+
+function lerEntradas(mod) {
+  const perfilSel = document.querySelector('input[name="perfil"]:checked');
+  const extras = {};
+  for (const extra of (mod.camposExtras || [])) {
+    extras[extra.id] = Number($('#f-extra-' + extra.id).value);
+  }
+  const venc = parseDataInput($('#f-venc').value);
+  const refEl = $('#f-ref');
+  return {
+    valorCentavos: parseDinheiro($('#f-valor').value),
+    venc,
+    ref: refEl ? parseDataInput(refEl.value) : venc,
+    multaPercent: mod.moraAplicavel ? Number($('#f-multa').value) : 0,
+    extras,
+    perfil: perfilSel ? perfilSel.value : mod.perfis[0].id
+  };
+}
+
+/* ---------- etapa 3: resultado ---------- */
+function linhaResumo(dt, dd, grande) {
+  return el('div', { class: grande ? 'grande' : null }, el('dt', null, dt), el('dd', null, dd));
+}
+
+function opcoesComparativo(mod, nEscolhido) {
+  const candidatos = mod.maxParcelas <= 8 ? [1, 2, 4, 8] : [12, 24, 36, 48, 60];
+  const s = new Set(candidatos.filter(n => n <= mod.maxParcelas));
+  s.add(nEscolhido);
+  return [...s].sort((a, b) => a - b);
+}
+
+function renderResultado(mod, entradas, nParcelas, r) {
+  const alvo = $('#resultado');
+  alvo.textContent = '';
+
+  const dataConsolid = mod.usaReferencia === false ? entradas.venc : entradas.ref;
+
+  // resumo da consolidação
+  alvo.append(el('div', { class: 'painel' },
+    el('h3', null, 'Consolidação do débito — ' + mod.nome + ' (' + r.perfilLabel + ')'),
+    el('p', { class: 'destaque-fonte' },
+      'Vencimento: ' + dataBR(entradas.venc) + ' · Consolidação: ' + dataBR(dataConsolid) +
+      ' · Impresso de simulação gerado localmente.'),
+    el('div', { class: 'tabela-rolagem' }, el('table', null,
+      el('tbody', null,
+        r.breakdown.map(b => el('tr', null, el('td', null, b.rotulo), el('td', null, dinheiro(b.valor)))),
+        el('tr', { class: 'total' }, el('td', null, 'Valor consolidado'), el('td', null, dinheiro(r.consolidado)))
+      )
+    )),
+    el('dl', { class: 'resumo' },
+      linhaResumo('Total pago em ' + nParcelas + ' parcela(s)', dinheiro(r.totalPago), true),
+      linhaResumo('Juros do parcelamento (SELIC projetada)', dinheiro(r.jurosParcelamento)),
+      linhaResumo('Parcela mínima da modalidade', dinheiro(r.minimoParcela))
+    )
+  ));
+
+  // avisos legais/de projeção
+  if (r.avisos.length) {
+    alvo.append(el('div', { class: 'painel' },
+      el('h3', null, '⚠️ Avisos e exigências da modalidade'),
+      el('ul', { class: 'avisos' }, r.avisos.map(a => el('li', null, a)))
+    ));
+  }
+
+  // tabela de parcelas
+  alvo.append(el('div', { class: 'painel' },
+    el('h3', null, 'Tabela de parcelas (' + nParcelas + '×)'),
+    el('div', { class: 'tabela-rolagem' }, el('table', null,
+      el('thead', null, el('tr', null,
+        el('th', { scope: 'col' }, 'Nº'), el('th', { scope: 'col' }, 'Mês'),
+        el('th', { scope: 'col' }, 'Juros SELIC'), el('th', { scope: 'col' }, 'Valor da parcela'),
+        el('th', { scope: 'col' }, 'Saldo devedor'))),
+      el('tbody', null, r.parcelas.map(p => el('tr', null,
+        el('td', null, String(p.k)), el('td', null, rotuloMes(p.mes)),
+        el('td', null, pct(p.jurosPercent)), el('td', null, dinheiro(p.valor)),
+        el('td', null, dinheiro(p.saldoApos))
+      ))),
+      el('tbody', null, el('tr', { class: 'total' },
+        el('td', null, 'Total'), el('td', null, ''), el('td', null, ''),
+        el('td', null, dinheiro(r.totalPago)), el('td', null, '')))
+    ))
+  ));
+
+  // comparativo entre quantidades de parcelas
+  const linhas = [];
+  for (const n of opcoesComparativo(mod, nParcelas)) {
+    const rc = (n === nParcelas) ? r : calcular(mod, entradas, n);
+    if (rc.erros && rc.erros.length) continue; // opção inválida p/ este débito (ex.: abaixo da parcela mínima)
+    linhas.push(el('tr', null,
+      el('td', null, n + '×' + (n === nParcelas ? ' (escolhida)' : '')),
+      el('td', null, dinheiro(rc.parcelas[0].valor)),
+      el('td', null, dinheiro(rc.parcelas[rc.parcelas.length - 1].valor)),
+      el('td', null, dinheiro(rc.totalPago)),
+      el('td', null, dinheiro(rc.jurosParcelamento))
+    ));
+  }
+  alvo.append(el('div', { class: 'painel' },
+    el('h3', null, 'Comparativo de opções'),
+    el('div', { class: 'tabela-rolagem' }, el('table', null,
+      el('thead', null, el('tr', null,
+        el('th', { scope: 'col' }, 'Parcelas'), el('th', { scope: 'col' }, '1ª parcela'),
+        el('th', { scope: 'col' }, 'Última parcela'), el('th', { scope: 'col' }, 'Total pago'),
+        el('th', { scope: 'col' }, 'Juros embutidos'))),
+      el('tbody', null, linhas)
+    )),
+    el('p', { class: 'destaque-fonte' }, 'Opções fora das exigências da modalidade (ex.: parcela abaixo do mínimo) não são exibidas.')
+  ));
+
+  alvo.append(el('p', { class: 'destaque-fonte' },
+    'Simulação gerada localmente pelo elisaofiscal.tax v' + APP_VERSAO +
+    ' — não é documento oficial e não foi transmitida a nenhum órgão.'));
+}
+
+/* ---------- eventos do wizard ---------- */
+$('#form-simulacao').addEventListener('submit', (ev) => {
+  ev.preventDefault();
+  const mod = estado.modulo;
+  if (!mod) return;
+  const entradas = lerEntradas(mod);
+  const nParcelas = Math.trunc(Number($('#f-parcelas').value));
+  const r = calcular(mod, entradas, nParcelas);
+  const listaErros = $('#lista-erros');
+  if (r.erros.length) {
+    listaErros.textContent = '';
+    r.erros.forEach(e2 => listaErros.append(el('li', null, e2)));
+    listaErros.hidden = false;
+    return;
+  }
+  listaErros.hidden = true;
+  renderResultado(mod, entradas, nParcelas, r);
+  irParaEtapa(3);
+});
+
+$('#btn-voltar-1').addEventListener('click', () => irParaEtapa(1));
+$('#btn-voltar-2').addEventListener('click', () => irParaEtapa(2));
+$('#btn-nova').addEventListener('click', () => irParaEtapa(1));
+$('#btn-imprimir').addEventListener('click', () => window.print()); // PDF local via diálogo do navegador — sem upload
+
+/* ---------- tema claro/escuro ---------- */
+function aplicarTema(tema) {
+  document.documentElement.setAttribute('data-tema', tema);
+  const escuro = tema === 'escuro' ||
+    (tema !== 'claro' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const btn = $('#btn-tema');
+  btn.textContent = escuro ? '☀️ Tema claro' : '🌙 Tema escuro';
+  btn.setAttribute('aria-pressed', String(escuro));
+}
+$('#btn-tema').addEventListener('click', () => {
+  const atual = document.documentElement.getAttribute('data-tema');
+  const escuroAgora = atual === 'escuro' ||
+    (atual !== 'claro' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const novo = escuroAgora ? 'claro' : 'escuro';
+  try { localStorage.setItem(CHAVE_TEMA, novo); } catch (e) { /* preferência opcional */ }
+  aplicarTema(novo);
+});
+
+/* ---------- limpar dados locais ---------- */
+$('#btn-limpar-dados').addEventListener('click', () => {
+  try {
+    localStorage.removeItem(CHAVE_TEMA);
+    localStorage.removeItem(CHAVE_ULTIMO);
+  } catch (e) { /* nada a limpar */ }
+  aplicarTema('');
+  montarCartoes();
+  $('#status-app').textContent =
+    'Dados locais removidos. Este site só guardava preferência de tema e último módulo aberto — nunca valores ou datas.';
+});
+
+/* ---------- modais (SELIC e changelog) ---------- */
+function abrirModal(id) { $(id).showModal(); }
+document.querySelectorAll('dialog [data-fechar]').forEach(b =>
+  b.addEventListener('click', () => b.closest('dialog').close()));
+
+$('#link-selic').addEventListener('click', (ev) => {
+  ev.preventDefault();
+  const c = $('#conteudo-modal-selic');
+  c.textContent = '';
+  const meta = window.SELIC_TABELA.meta;
+  c.append(el('p', null, 'Fonte: ' + meta.fonte));
+  c.append(el('p', null, 'Atualizada em: ' + meta.atualizadoEm));
+  c.append(el('p', { class: 'destaque-fonte' }, meta.observacao));
+  const chaves = Object.keys(window.SELIC_TABELA.taxas).sort().reverse();
+  c.append(el('div', { class: 'tabela-rolagem' }, el('table', null,
+    el('thead', null, el('tr', null, el('th', null, 'Mês'), el('th', null, 'Taxa (%)'))),
+    el('tbody', null, chaves.map(k => el('tr', null,
+      el('td', null, k),
+      el('td', null, window.SELIC_TABELA.taxas[k].toLocaleString('pt-BR', { minimumFractionDigits: 2 }))
+    )))
+  )));
+  abrirModal('#modal-selic');
+});
+
+$('#link-log').addEventListener('click', (ev) => {
+  ev.preventDefault();
+  const c = $('#conteudo-modal-log');
+  c.textContent = '';
+  for (const v of CHANGELOG) {
+    c.append(el('h3', null, 'v' + v.versao + ' — ' + v.data));
+    c.append(el('ul', null, v.itens.map(i => el('li', null, i))));
+  }
+  abrirModal('#modal-log');
+});
+
+/* ---------- inicialização ---------- */
+$('#versao-app').textContent = 'v' + APP_VERSAO;
+(function () {
+  const meta = window.SELIC_TABELA.meta;
+  $('#info-selic').textContent =
+    '📈 Tabela SELIC local: atualizada em ' + meta.atualizadoEm + ' · ' + meta.fonte +
+    '. Taxas mudam mensalmente — confira antes de decidir.';
+})();
+let temaSalvo = '';
+try { temaSalvo = localStorage.getItem(CHAVE_TEMA) || ''; } catch (e) { /* sem localStorage */ }
+aplicarTema(temaSalvo);
+montarCartoes();
+irParaEtapa(1);
+})();
+</script>
+</body>
+</html>

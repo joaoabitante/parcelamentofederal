@@ -1,0 +1,12 @@
+# SO / editores
+Thumbs.db
+desktop.ini
+.DS_Store
+*.log
+
+# dependências (não deve haver — projeto é estático puro)
+node_modules/
+
+# segredos (não deve haver — projeto não usa credenciais)
+.env
+.env.*
