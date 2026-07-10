@@ -2,6 +2,13 @@
 
 Checklist de revisão (perspectiva de dev sênior). Qualquer ❌ bloqueia release.
 
+## v1.3.0 (2026-07-10) — SEO + reparcelamento SN/MEI
+
+- ✅ **Anonimato** — SEO só com meta/JSON-LD estáticos; sem analytics, sem `fetch` no browser; `mei.js` script clássico local.
+- ✅ **Validação** — reparcelamento: n ≥ 2; 1ª ≥ mínimo da modalidade; saldo das demais ≥ mínimo; % só 10 ou 20.
+- ✅ **DOM** — filtros e rádios de reparcelamento via `el()` / atributos seguros.
+- ⚠️ **Regras genéricas de manual** — não substituem o aplicativo oficial do Portal do Simples; disclaimers mantidos.
+
 ## v1.2.0 (2026-07-10) — Transação PGFN + comparação em sessão
 
 - ✅ **Anonimato preservado** — comparação só em `estado.comparacoes` (RAM); sem localStorage de valores/datas; zero `fetch` em arquivos do browser; novo módulo `transacao-pgfn.js` é script estático clássico.

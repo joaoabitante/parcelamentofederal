@@ -2,6 +2,22 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.3.0] - 2026-07-10
+
+### Adicionado
+- **MEI · Simei** como módulo próprio (Manual RFB 02/09/2025): 2–60 parcelas, mín. R$ 50, DASN-Simei, reparcelamento 10%/20%.
+- **Reparcelamento** no Simples Nacional e no MEI: 1ª parcela de 10% (um histórico) ou 20% (mais de um) da dívida consolidada, com piso da modalidade (R$ 300 / R$ 50) — Manual do Parcelamento RFB.
+- Multa de consolidação no **teto de 20%** para SN/MEI (art. 53 Res. CGSN nº 140/2018), editável se o valor já vier consolidado.
+- SEO: Open Graph, Twitter, canonical, JSON-LD `WebApplication`, `robots.txt`, `sitemap.xml`.
+- UI/UX: intro com H2 semântico, filtros por grupo (Simples/MEI, PGFN, e-CAC, PF), meta-regras nos cartões, sugestão de nº de parcelas.
+
+### Alterado
+- Simples Nacional restrito a **ME/EPP** (PGDAS-D); MEI saiu deste cartão.
+- Mínimo de **2 parcelas** no SN/MEI (manuais RFB).
+
+### Privacidade
+- Sem mudanças de rede: continua 100% client-side e anônimo.
+
 ## [1.2.0] - 2026-07-10
 
 ### Adicionado

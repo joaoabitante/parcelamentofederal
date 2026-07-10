@@ -1,5 +1,22 @@
 # DEV-LOG — parcelamentofederal (parcelamento.elisaofiscal.tax)
 
+## 2026-07-10 - SEO/UI + reparcelamento SN/MEI (v1.3.0)
+
+### Adicionado
+- `modules/mei.js` separado do SN; manuais RFB (Parcelamento MEI 02/09/2025 e Parcelamento SN 06/08/2024).
+- Motor: `modoReparcelamento` + `entradas.reparcelar` / `reparcelPct` (10|20); 1ª parcela especial + saldo com SELIC.
+- SEO estático (meta OG/Twitter, JSON-LD, robots, sitemap) sem scripts externos.
+- Filtros de modalidades e hero com palavras-chave (parcelamento/reparcelamento).
+
+### Decisões técnicas
+- Multa SN/MEI default 20% (`forcarMultaTeto`) alinhada ao art. 53 CGSN 140 (manual: consolidação com multa máxima mesmo com atraso < 60 dias); campo continua editável.
+- Reparcelamento não embute SELIC na 1ª cota especial (valor = % da consolidada); demais prestações seguem Lei 10.522/2002.
+- MEI fora do cartão Simples: manuais RFB separam aplicativos e mínimos (R$ 300 vs R$ 50).
+
+### Pendências
+- COSIT pontuais (ex. SC 618/2017 sobre limites) só em avisos — não alteram o motor genérico.
+- Confirmar se algum edital futuro muda % de reparcelamento (hoje 10/20 nos manuais).
+
 ## 2026-07-10 - Transação PGFN + comparação (v1.2.0)
 
 ### Adicionado

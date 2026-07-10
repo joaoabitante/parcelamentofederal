@@ -3,8 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Simulador gratuito e 100% anônimo de parcelamentos federais: Regularize/PGFN, Transação por adesão, e-CAC, Simples, Lucro Presumido e IRPF. Tudo no navegador — zero envio de dados.">
-<title>parcelamento.elisaofiscal.tax — simulador anônimo de parcelamentos federais</title>
+<meta name="description" content="Simulador gratuito e anônimo de parcelamento e reparcelamento federal: Simples Nacional, MEI, PGFN, e-CAC, IRPF. Regras CGSN/RFB, SELIC oficial. 100% no navegador — zero envio de dados.">
+<meta name="keywords" content="parcelamento federal, reparcelamento simples nacional, parcelamento MEI, PGFN, e-CAC, DAS, PGDAS-D, DASN-Simei, SELIC, multa mora, simulador tributário, CGSN 140, contador">
+<meta name="author" content="João Carlos Bueno Abitante">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0b5d3b">
+<link rel="canonical" href="https://parcelamento.elisaofiscal.tax/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://parcelamento.elisaofiscal.tax/">
+<meta property="og:title" content="Parcelamento Federal — Simples, MEI, PGFN e e-CAC | anônimo">
+<meta property="og:description" content="Simule parcelamento e reparcelamento (10%/20%) do Simples e MEI, Regularize, Transação PGFN e e-CAC. Grátis, offline e sem rastreio.">
+<meta property="og:site_name" content="parcelamento.elisaofiscal.tax">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Parcelamento Federal anônimo — Simples, MEI e PGFN">
+<meta name="twitter:description" content="Simulador client-side com regras RFB/CGSN e SELIC oficial. Reparcelamento 10% ou 20%.">
+<title>Parcelamento Federal — Simples Nacional, MEI, PGFN | anônimo</title>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Parcelamento Federal — elisaofiscal.tax",
+  "url": "https://parcelamento.elisaofiscal.tax/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "pt-BR",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
+  "description": "Simulador anônimo de parcelamento e reparcelamento de tributos federais (Simples Nacional, MEI, PGFN, e-CAC, IRPF) com SELIC oficial.",
+  "author": { "@type": "Person", "name": "João Carlos Bueno Abitante", "url": "https://joao.abitante.net/" },
+  "featureList": [
+    "Parcelamento e reparcelamento Simples Nacional ME/EPP",
+    "Parcelamento e reparcelamento MEI (Simei)",
+    "Regularize e Transação PGFN",
+    "e-CAC, Lucro Presumido e quotas IRPF",
+    "Cálculo 100% no navegador sem envio de dados"
+  ]
+}
+</script>
 <style>
 /* ============ tema (claro/escuro) ============ */
 :root {
@@ -216,6 +253,52 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
 }
 .entrada-destaque { color: var(--primaria); font-weight: 700; }
 
+
+/* hero / SEO intro */
+.hero-seo {
+  margin: 1rem 0 1.2rem; padding: 1.1rem 1.15rem;
+  background: var(--superficie); border: 1px solid var(--borda);
+  border-radius: .9rem; box-shadow: var(--sombra);
+}
+.hero-seo h2 { margin: 0 0 .45rem; font-size: clamp(1.2rem, 3.5vw, 1.55rem); line-height: 1.25; }
+.hero-seo p { margin: 0; color: var(--texto-suave); font-size: .95rem; max-width: 52rem; }
+.hero-seo .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .75rem; }
+.hero-seo .chips span {
+  font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  padding: .28rem .65rem; border-radius: 999px;
+  background: var(--destaque); border: 1px solid var(--borda); color: var(--primaria);
+}
+.filtro-modulos { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 .9rem; }
+.filtro-modulos button {
+  font-size: .82rem; padding: .4rem .75rem; min-height: 40px;
+  border-radius: 999px;
+}
+.filtro-modulos button[aria-pressed="true"] {
+  background: var(--primaria); color: var(--primaria-texto); border-color: var(--primaria); font-weight: 700;
+}
+.grupo-titulo {
+  grid-column: 1 / -1; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--texto-suave); font-weight: 700; margin: .4rem 0 0; padding-top: .3rem;
+}
+.cartao-modulo .meta-regra {
+  margin-top: .45rem; font-size: .78rem; color: var(--texto-suave);
+}
+.cartao-modulo:hover, .cartao-modulo:focus-visible {
+  transform: translateY(-2px); box-shadow: 0 6px 18px rgba(15,30,45,.1);
+  border-color: var(--primaria);
+}
+.hint-box {
+  background: var(--destaque); border: 1px solid var(--borda); border-radius: .6rem;
+  padding: .7rem .85rem; font-size: .88rem; color: var(--texto-suave); margin-bottom: 1rem;
+}
+.hint-box strong { color: var(--texto); }
+.sugestao-n {
+  font-size: .85rem; color: var(--primaria); font-weight: 600; margin-top: .35rem;
+}
+@media (min-width: 56rem) {
+  .cartoes { grid-template-columns: 1fr 1fr 1fr; }
+}
+
 /* ============ impressão ============ */
 @media print {
   header.topo .acoes-topo, .passos, .selo, .acoes, .barra-disclaimer,
@@ -232,7 +315,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
 <header class="topo">
   <div class="marca">
     <h1>parcelamento.elisaofiscal<span class="dominio">.tax</span></h1>
-    <p class="tagline">Simulador anônimo de parcelamentos de tributos federais</p>
+    <p class="tagline">Parcelamento e reparcelamento federal — Simples, MEI, PGFN e e-CAC</p>
   </div>
   <div class="acoes-topo nao-imprimir">
     <button type="button" id="btn-tema" aria-pressed="false">🌙 Tema escuro</button>
@@ -255,7 +338,20 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
 
   <!-- ETAPA 1: escolher módulo -->
   <section id="etapa-1" aria-labelledby="titulo-etapa-1">
-    <h2 id="titulo-etapa-1">Qual débito você quer simular?</h2>
+    <div class="hero-seo">
+      <h2 id="titulo-etapa-1">Simule parcelamento e reparcelamento federal</h2>
+      <p>Ferramenta para contadores e contribuintes: <strong>Simples Nacional</strong>, <strong>MEI</strong> (com reparcelamento 10% ou 20%), <strong>PGFN</strong>, <strong>e-CAC</strong>, Lucro Presumido e quotas de IRPF. Cálculo com SELIC local e regras da RFB/CGSN — tudo no seu navegador, sem cadastro.</p>
+      <div class="chips" aria-hidden="true">
+        <span>Anônimo</span><span>Reparcelamento SN/MEI</span><span>SELIC BCB</span><span>Sem cookies</span>
+      </div>
+    </div>
+    <div class="filtro-modulos nao-imprimir" role="group" aria-label="Filtrar modalidades">
+      <button type="button" data-filtro="todos" aria-pressed="true">Todos</button>
+      <button type="button" data-filtro="simples" aria-pressed="false">Simples &amp; MEI</button>
+      <button type="button" data-filtro="pgfn" aria-pressed="false">PGFN</button>
+      <button type="button" data-filtro="rfb" aria-pressed="false">e-CAC / RFB</button>
+      <button type="button" data-filtro="pf" aria-pressed="false">Pessoa física</button>
+    </div>
     <div class="cartoes" id="lista-modulos"></div>
   </section>
 
@@ -334,6 +430,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
 <script src="modules/transacao-pgfn.js"></script>
 <script src="modules/ecac.js"></script>
 <script src="modules/simples-nacional.js"></script>
+<script src="modules/mei.js"></script>
 <script src="modules/lucro-presumido.js"></script>
 <script src="modules/irpf.js"></script>
 
@@ -353,10 +450,17 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
  * flutuante; percentuais só viram centavos com Math.round no final.
  * ===================================================================== */
 
-const APP_VERSAO = '1.2.0';
+const APP_VERSAO = '1.3.0';
 const CHAVE_TEMA = 'elisao.tema';
 const CHAVE_ULTIMO = 'elisao.ultimo-modulo';
 const CHANGELOG = [
+  {
+    versao: '1.3.0', data: '2026-07-10', itens: [
+      'Simples Nacional e MEI separados, com parcelamento e reparcelamento (1ª parcela 10% ou 20% da consolidada — manuais RFB).',
+      'Multa de consolidação no teto de 20% para SN/MEI (art. 53 Res. CGSN 140/2018); mín. 2 e máx. 60 parcelas.',
+      'SEO (Open Graph, JSON-LD, canonical) e UI/UX: intro, filtros por grupo e cartões com regras visíveis.'
+    ]
+  },
   {
     versao: '1.2.0', data: '2026-07-10', itens: [
       'Novo módulo: Transação PGFN por adesão — entrada (%), desconto sobre encargos com teto por perfil e saldo em até 60× (simulação genérica de editais).',
@@ -548,6 +652,55 @@ function calcular(mod, entradas, nParcelas) {
   let saldoParcelar = consolidadoBruto;
   let parcelasEntrada = [];
   let metaTransacao = null;
+  let metaReparcel = null;
+  let primeiraEspecialCentavos = 0;
+
+  // ---- Reparcelamento SN/MEI (Manual RFB): 1ª parcela 10% ou 20% da consolidada ----
+  const isReparcel = !!(mod.modoReparcelamento && entradas.reparcelar);
+  const reparcelPct = entradas.reparcelPct === 20 ? 20 : 10;
+  if (isReparcel) {
+    if (!Number.isInteger(nParcelas) || nParcelas < (mod.minParcelas || 2)) {
+      return { erros: ['Reparcelamento exige no mínimo ' + (mod.minParcelas || 2) + ' parcelas (Manual RFB / CGSN).'] };
+    }
+    primeiraEspecialCentavos = Math.round(consolidadoBruto * reparcelPct / 100);
+    if (primeiraEspecialCentavos < minimo) primeiraEspecialCentavos = minimo;
+    if (primeiraEspecialCentavos >= consolidadoBruto) {
+      return {
+        erros: ['A 1ª parcela do reparcelamento (' + pct(reparcelPct) + ' / mín. ' + dinheiro(minimo) +
+          ') fica igual ou maior que a dívida consolidada. Use menos percentual ou parcelamento ordinário.']
+      };
+    }
+    saldoParcelar = consolidadoBruto - primeiraEspecialCentavos;
+    const nRestantes = nParcelas - 1;
+    if (nRestantes < 1) {
+      return { erros: ['Informe ao menos 2 parcelas no reparcelamento (a 1ª é a de 10% ou 20%).'] };
+    }
+    const baseRest = Math.floor(saldoParcelar / nRestantes);
+    if (baseRest < minimo) {
+      const nMaxRest = Math.max(1, Math.floor(saldoParcelar / minimo));
+      return {
+        erros: ['Após a 1ª parcela de ' + dinheiro(primeiraEspecialCentavos) + ', o saldo não cabe em ' +
+          nRestantes + ' prestações com mínimo de ' + dinheiro(minimo) +
+          '. Máximo total aproximado: ' + (nMaxRest + 1) + ' parcelas (1ª especial + ' + nMaxRest + ').']
+      };
+    }
+    breakdown.push({
+      rotulo: '1ª parcela do reparcelamento (' + pct(reparcelPct) + ' da consolidada' +
+        (primeiraEspecialCentavos === minimo ? ', piso da modalidade' : '') + ')',
+      valor: primeiraEspecialCentavos
+    });
+    breakdown.push({ rotulo: 'Saldo a parcelar nas demais prestações', valor: saldoParcelar });
+    metaReparcel = {
+      pct: reparcelPct,
+      primeira: primeiraEspecialCentavos,
+      saldo: saldoParcelar,
+      nRestantes
+    };
+    avisos.push(
+      'Reparcelamento: deferimento condicionado ao pagamento da 1ª parcela de ' + pct(reparcelPct) +
+      ' da dívida consolidada (Manual do Parcelamento RFB — 10% com um histórico anterior; 20% com mais de um).'
+    );
+  }
 
   // ---- Transação PGFN: entrada (sem desconto) + desconto sobre encargos + saldo ----
   if (mod.modoTransacao) {
@@ -605,19 +758,26 @@ function calcular(mod, entradas, nParcelas) {
   }
 
   // ---- regras de piso da modalidade (sobre o valor que vira prestação ordinária) ----
-  const valorParaParcelas = mod.modoTransacao ? saldoParcelar : consolidado;
+  const valorParaParcelas = (mod.modoTransacao || isReparcel) ? saldoParcelar : consolidado;
+  const nParaBase = isReparcel ? (nParcelas - 1) : nParcelas;
 
   if (mod.modoTransacao && valorParaParcelas === 0 && nParcelas > 1) {
-    // só entrada / desconto total — força 1 "parcela" simbólica zero
     nParcelas = 1;
   }
 
-  const baseParcela = valorParaParcelas === 0 ? 0 : Math.floor(valorParaParcelas / nParcelas);
+  // parcelamento ordinário SN/MEI: mínimo de 2 parcelas (manuais RFB)
+  if (!mod.modoTransacao && !isReparcel && mod.minParcelas && nParcelas < mod.minParcelas) {
+    return { erros: ['Esta modalidade exige no mínimo ' + mod.minParcelas + ' parcelas (Manual RFB / CGSN).'] };
+  }
+
+  const baseParcela = valorParaParcelas === 0 ? 0 : Math.floor(valorParaParcelas / Math.max(1, nParaBase));
   if (valorParaParcelas > 0 && baseParcela < minimo) {
     const nMax = Math.max(1, Math.floor(valorParaParcelas / minimo));
+    const rotuloN = isReparcel ? ('prestações do saldo (além da 1ª de ' + pct(reparcelPct) + ')') : 'parcelas';
     return {
-      erros: ['Com ' + nParcelas + ' parcelas do saldo, cada uma ficaria abaixo do mínimo de ' + dinheiro(minimo) +
-        ' para ' + perfilObj.label + '. Para este saldo o máximo é de ' + nMax + ' parcela(s).']
+      erros: ['Com o saldo atual, cada uma das ' + rotuloN + ' ficaria abaixo do mínimo de ' + dinheiro(minimo) +
+        ' para ' + perfilObj.label + '. Máximo possível no saldo: ' + nMax +
+        (isReparcel ? ' (+ 1ª especial)' : '') + '.']
     };
   }
   if (mod.valorMinimoParcelamentoCentavos && consolidado < mod.valorMinimoParcelamentoCentavos && nParcelas > 1) {
@@ -627,16 +787,41 @@ function calcular(mod, entradas, nParcelas) {
     };
   }
 
-  // ---- prestações do saldo: base fixa + SELIC individual por mês de pagamento ----
-  // (Lei 10.522/2002, art. 13, § único — ver lib/calculo-juros-selic.js)
-  // Na transação, o mês 1 do saldo começa APÓS as cotas de entrada (offset).
+  // ---- prestações: base fixa + SELIC (Lei 10.522/2002, art. 13, § único) ----
+  // Transação: saldo após entrada. Reparcelamento: 1ª especial + saldo.
   const offsetMes = mod.modoTransacao ? nEntrada : 0;
   const parcelas = [];
-  let saldo = valorParaParcelas;
   let totalSaldoPago = 0;
-  if (valorParaParcelas === 0) {
-    // nada a parcelar no saldo
+  let totalPrimeiraReparcel = 0;
+
+  if (isReparcel) {
+    const jp1 = window.CalcSelic.jurosParcelaPercent(ymRef, 1);
+    projecaoMeses = Math.max(projecaoMeses, jp1.mesesProjetados);
+    // 1ª do reparcelamento: valor fixo (10%/20%), sem SELIC adicional na simulação
+    totalPrimeiraReparcel = primeiraEspecialCentavos;
+    parcelas.push({
+      k: 1, mes: jp1.mesPagamento, jurosPercent: 0,
+      valor: primeiraEspecialCentavos,
+      saldoApos: saldoParcelar,
+      tipo: 'reparcel-entrada'
+    });
+    let saldo = saldoParcelar;
+    const nRest = nParcelas - 1;
+    const baseR = Math.floor(saldo / nRest);
+    for (let i = 1; i <= nRest; i++) {
+      const k = i + 1;
+      const base = (i === nRest) ? saldo : baseR;
+      const jp = window.CalcSelic.jurosParcelaPercent(ymRef, k);
+      projecaoMeses = Math.max(projecaoMeses, jp.mesesProjetados);
+      const valor = base + Math.round(base * jp.percent / 100);
+      totalSaldoPago += valor;
+      saldo -= base;
+      parcelas.push({ k, mes: jp.mesPagamento, jurosPercent: jp.percent, valor, saldoApos: saldo, tipo: 'saldo' });
+    }
+  } else if (valorParaParcelas === 0) {
+    // nada
   } else {
+    let saldo = valorParaParcelas;
     for (let k = 1; k <= nParcelas; k++) {
       const base = (k === nParcelas) ? saldo : baseParcela;
       const jp = window.CalcSelic.jurosParcelaPercent(ymRef, k + offsetMes);
@@ -649,11 +834,10 @@ function calcular(mod, entradas, nParcelas) {
   }
 
   const totalEntradaPago = parcelasEntrada.reduce((s, p) => s + p.valor, 0);
-  const totalPago = totalEntradaPago + totalSaldoPago;
-  // base sem juros de parcelamento = consolidado após desconto (entrada + principal do saldo)
+  const totalPago = totalEntradaPago + totalSaldoPago + totalPrimeiraReparcel;
   const baseSemJurosParcel = mod.modoTransacao
     ? (entradaTotal + valorParaParcelas)
-    : consolidado;
+    : (isReparcel ? consolidadoBruto : consolidado);
   const jurosParcelamento = totalPago - baseSemJurosParcel;
 
   // ---- avisos ----
@@ -671,12 +855,13 @@ function calcular(mod, entradas, nParcelas) {
 
   return {
     erros: [], avisos, breakdown,
-    consolidado: mod.modoTransacao ? consolidado : consolidado,
-    consolidadoBruto: mod.modoTransacao ? consolidadoBruto : consolidado,
+    consolidado: mod.modoTransacao ? consolidado : consolidadoBruto,
+    consolidadoBruto,
     parcelas, parcelasEntrada, totalPago, jurosParcelamento, projecaoMeses,
     minimoParcela: minimo, perfilLabel: perfilObj.label,
-    metaTransacao,
-    entradaTotal, descontoAplicado, saldoParcelar: valorParaParcelas
+    metaTransacao, metaReparcel,
+    entradaTotal, descontoAplicado, saldoParcelar: valorParaParcelas,
+    isReparcel, reparcelPct: isReparcel ? reparcelPct : 0
   };
 }
 
@@ -700,21 +885,71 @@ function irParaEtapa(n) {
 }
 
 /* ---------- etapa 1: cartões de módulo ---------- */
+function grupoDoModulo(mod) {
+  if (mod.grupo) return mod.grupo;
+  if (mod.id === 'regularize' || mod.id === 'transacao-pgfn') return 'pgfn';
+  if (mod.id === 'simples' || mod.id === 'mei') return 'simples';
+  if (mod.id === 'irpf') return 'pf';
+  return 'rfb';
+}
+
+const ROTULOS_GRUPO = {
+  simples: 'Simples Nacional & MEI',
+  pgfn: 'Dívida ativa · PGFN',
+  rfb: 'Receita Federal · e-CAC',
+  pf: 'Pessoa física'
+};
+
+let filtroAtivo = 'todos';
+
 function montarCartoes() {
   const lista = $('#lista-modulos');
   lista.textContent = '';
   let ultimo = null;
   try { ultimo = localStorage.getItem(CHAVE_ULTIMO); } catch (e) { /* sem localStorage */ }
+  const ordem = ['simples', 'pgfn', 'rfb', 'pf'];
+  const porGrupo = {};
   for (const mod of MODULOS) {
-    const btn = el('button', { type: 'button', class: 'cartao-modulo', onclick: () => abrirModulo(mod) },
-      el('div', { class: 'nome' }, mod.icone + ' ' + mod.nome,
-        (mod.id === 'transacao-pgfn') ? el('span', { class: 'badge-novo' }, 'novo') : null,
-        (ultimo === mod.id) ? el('span', { class: 'badge-ultimo' }, 'último usado') : null),
-      el('div', { class: 'desc' }, mod.descricao)
-    );
-    lista.append(btn);
+    const g = grupoDoModulo(mod);
+    if (filtroAtivo !== 'todos' && g !== filtroAtivo) continue;
+    (porGrupo[g] = porGrupo[g] || []).push(mod);
+  }
+  for (const g of ordem) {
+    const mods = porGrupo[g];
+    if (!mods || !mods.length) continue;
+    if (filtroAtivo === 'todos') lista.append(el('div', { class: 'grupo-titulo' }, ROTULOS_GRUPO[g] || g));
+    for (const mod of mods) {
+      const meta = [];
+      if (mod.minParcelas) meta.push(mod.minParcelas + '–' + mod.maxParcelas + '×');
+      else meta.push('até ' + mod.maxParcelas + '×');
+      if (mod.perfis && mod.perfis[0]) meta.push('mín. ' + dinheiro(mod.perfis[0].parcelaMinimaCentavos));
+      if (mod.modoReparcelamento) meta.push('reparcelamento');
+      const btn = el('button', {
+        type: 'button', class: 'cartao-modulo',
+        'data-grupo': grupoDoModulo(mod),
+        onclick: () => abrirModulo(mod)
+      },
+        el('div', { class: 'nome' }, mod.icone + ' ' + mod.nome,
+          (mod.id === 'mei' || mod.id === 'simples') ? el('span', { class: 'badge-novo' }, 'SN/MEI') : null,
+          (mod.id === 'transacao-pgfn') ? el('span', { class: 'badge-novo' }, 'novo') : null,
+          (ultimo === mod.id) ? el('span', { class: 'badge-ultimo' }, 'último usado') : null),
+        el('div', { class: 'desc' }, mod.descricao),
+        el('div', { class: 'meta-regra' }, meta.join(' · '))
+      );
+      lista.append(btn);
+    }
   }
 }
+
+document.querySelectorAll('.filtro-modulos [data-filtro]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    filtroAtivo = btn.getAttribute('data-filtro') || 'todos';
+    document.querySelectorAll('.filtro-modulos [data-filtro]').forEach(b => {
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
+    montarCartoes();
+  });
+});
 
 /* ---------- etapa 2: formulário dinâmico ---------- */
 function abrirModulo(mod) {
@@ -758,6 +993,30 @@ function abrirModulo(mod) {
     ));
   }
 
+  if (mod.modoReparcelamento) {
+    campos.append(el('fieldset', null,
+      el('legend', null, 'Tipo de pedido (RFB)'),
+      el('div', { class: 'grupo-radios' },
+        el('label', null,
+          el('input', { type: 'radio', name: 'tipo-parc', value: 'ordinario', checked: '' }),
+          'Parcelamento ordinário (primeira vez / sem histórico especial)'
+        ),
+        el('label', null,
+          el('input', { type: 'radio', name: 'tipo-parc', value: 'reparcel-10' }),
+          'Reparcelamento — 1ª parcela 10% (um parcelamento anterior)'
+        ),
+        el('label', null,
+          el('input', { type: 'radio', name: 'tipo-parc', value: 'reparcel-20' }),
+          'Reparcelamento — 1ª parcela 20% (mais de um parcelamento anterior)'
+        )
+      ),
+      el('p', { class: 'hint-box' },
+        el('strong', null, 'Manuais RFB: '),
+        'no reparcelamento a 1ª parcela é 10% ou 20% da dívida consolidada e não pode ser inferior ao mínimo da modalidade. O restante divide-se nas demais prestações (máx. 60 no total).'
+      )
+    ));
+  }
+
   if (mod.modoTransacao) {
     const maxEnt0 = (mod.perfis[0] && mod.perfis[0].maxParcelasEntrada) || 6;
     campos.append(el('div', { class: 'campo' },
@@ -777,18 +1036,36 @@ function abrirModulo(mod) {
     ));
   }
 
+  const minP = mod.minParcelas || 1;
+  const defP = Math.min(Math.max(12, minP), mod.maxParcelas);
   campos.append(el('div', { class: 'campo' },
-    el('label', { for: 'f-parcelas' }, mod.modoTransacao ? 'Parcelas do saldo (após entrada)' : 'Número de parcelas desejado',
-      el('span', { class: 'ajuda' }, 'Limite legal desta modalidade: ' + mod.maxParcelas + ' parcela(s).')),
-    el('input', { id: 'f-parcelas', type: 'number', min: '1', max: String(mod.maxParcelas), step: '1', value: String(Math.min(12, mod.maxParcelas)) })
+    el('label', { for: 'f-parcelas' },
+      mod.modoTransacao ? 'Parcelas do saldo (após entrada)' : 'Número de parcelas desejado',
+      el('span', { class: 'ajuda' },
+        'Limite: ' + minP + ' a ' + mod.maxParcelas +
+        (mod.modoReparcelamento ? ' (no reparcelamento a 1ª conta no total).' : '.'))),
+    el('input', {
+      id: 'f-parcelas', type: 'number',
+      min: String(minP), max: String(mod.maxParcelas), step: '1',
+      value: String(defP)
+    }),
+    el('p', { class: 'sugestao-n', id: 'sugestao-parcelas', hidden: '' })
   ));
 
   if (mod.moraAplicavel) {
+    const multaIni = (typeof mod.multaPadraoPercent === 'number') ? mod.multaPadraoPercent : 0;
     campos.append(el('div', { class: 'campo' },
       el('label', { for: 'f-multa' }, 'Multa de mora (%)',
-        el('span', { class: 'ajuda', id: 'multa-sugestao' }, '')),
-      el('input', { id: 'f-multa', type: 'number', min: '0', max: '20', step: '0.01', value: '0' })
+        el('span', { class: 'ajuda', id: 'multa-sugestao' },
+          mod.forcarMultaTeto
+            ? 'SN/MEI: consolidação com multa no teto de 20% (art. 53 Res. CGSN 140/2018). Editável se o valor já vier consolidado.'
+            : '')),
+      el('input', {
+        id: 'f-multa', type: 'number', min: '0', max: '20', step: '0.01',
+        value: String(multaIni)
+      })
     ));
+    if (mod.forcarMultaTeto) estado.multaEditada = true; // não sobrescrever o teto 20% com 0,33%/dia
   }
 
   for (const extra of (mod.camposExtras || [])) {
@@ -803,7 +1080,7 @@ function abrirModulo(mod) {
     el('ul', null, mod.basesLegais.map(b => el('li', null, b)))));
 
   // sugestão automática de multa (0,33%/dia, teto 20%) — editável pelo usuário
-  if (mod.moraAplicavel) {
+  if (mod.moraAplicavel && !mod.forcarMultaTeto) {
     const inputMulta = $('#f-multa');
     const atualizar = () => {
       const venc = parseDataInput($('#f-venc').value);
@@ -820,6 +1097,23 @@ function abrirModulo(mod) {
     const refEl = $('#f-ref');
     if (refEl) refEl.addEventListener('change', atualizar);
   }
+
+  // sugestão de nº máximo de parcelas pelo mínimo da modalidade
+  const atualizarSugestaoN = () => {
+    const elS = $('#sugestao-parcelas');
+    if (!elS) return;
+    const v = parseDinheiro($('#f-valor').value);
+    const min = (mod.perfis[0] && mod.perfis[0].parcelaMinimaCentavos) || 0;
+    if (!v || !min) { elS.hidden = true; return; }
+    // aproximação: só principal (sem mora) — orientação de teto
+    const nMax = Math.min(mod.maxParcelas, Math.max(mod.minParcelas || 1, Math.floor(v / min)));
+    elS.hidden = false;
+    elS.textContent = 'Orientação: com o valor informado (sem mora), cabem no máximo cerca de ' +
+      nMax + ' parcelas de ' + dinheiro(min) + ' (antes de multa/juros). Ajuste após calcular.';
+  };
+  const valorEl = $('#f-valor');
+  if (valorEl) valorEl.addEventListener('input', atualizarSugestaoN);
+  atualizarSugestaoN();
 
   // ajusta teto de parcelas de entrada ao trocar perfil (transação)
   if (mod.modoTransacao) {
@@ -862,6 +1156,14 @@ function lerEntradas(mod) {
     out.entradaPct = Number($('#f-entrada-pct').value);
     out.descontoPct = Number($('#f-desconto-pct').value);
     out.nEntrada = Math.trunc(Number($('#f-entrada-n').value));
+  }
+  out.reparcelar = false;
+  out.reparcelPct = 10;
+  if (mod.modoReparcelamento) {
+    const t = document.querySelector('input[name="tipo-parc"]:checked');
+    const v = t ? t.value : 'ordinario';
+    if (v === 'reparcel-10') { out.reparcelar = true; out.reparcelPct = 10; }
+    if (v === 'reparcel-20') { out.reparcelar = true; out.reparcelPct = 20; }
   }
   return out;
 }
@@ -946,14 +1248,18 @@ function renderResultado(mod, entradas, nParcelas, r) {
 
   // tabela de parcelas
   alvo.append(el('div', { class: 'painel' },
-    el('h3', null, mod.modoTransacao ? ('Tabela do saldo parcelado (' + nParcelas + '×)') : ('Tabela de parcelas (' + nParcelas + '×)')),
+    el('h3', null,
+      r.isReparcel
+        ? ('Tabela do reparcelamento (' + nParcelas + '× · 1ª a ' + pct(r.reparcelPct) + ')')
+        : (mod.modoTransacao ? ('Tabela do saldo parcelado (' + nParcelas + '×)') : ('Tabela de parcelas (' + nParcelas + '×)'))),
     el('div', { class: 'tabela-rolagem' }, el('table', null,
       el('thead', null, el('tr', null,
         el('th', { scope: 'col' }, 'Nº'), el('th', { scope: 'col' }, 'Mês'),
         el('th', { scope: 'col' }, 'Juros SELIC'), el('th', { scope: 'col' }, 'Valor da parcela'),
         el('th', { scope: 'col' }, 'Saldo devedor'))),
       el('tbody', null, r.parcelas.map(p => el('tr', null,
-        el('td', null, String(p.k)), el('td', null, rotuloMes(p.mes)),
+        el('td', null, String(p.k) + (p.tipo === 'reparcel-entrada' ? ' · 1ª' : '')),
+        el('td', null, rotuloMes(p.mes)),
         el('td', null, pct(p.jurosPercent)), el('td', null, dinheiro(p.valor)),
         el('td', null, dinheiro(p.saldoApos))
       ))),
@@ -992,7 +1298,7 @@ function renderResultado(mod, entradas, nParcelas, r) {
   ));
 
   alvo.append(el('p', { class: 'destaque-fonte' },
-    'Simulação gerada localmente por parcelamento.elisaofiscal.tax v' + APP_VERSAO +
+    'Simulação local · parcelamento.elisaofiscal.tax v' + APP_VERSAO +
     ' — não é documento oficial e não foi transmitida a nenhum órgão.'));
   renderPainelComparacao();
 }

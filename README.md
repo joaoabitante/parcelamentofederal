@@ -7,7 +7,8 @@ Simulador **gratuito, 100% anônimo e client-side** de parcelamentos de tributos
 - 🏛️ **Regularize / PGFN** — dívida ativa da União (até 60×)
 - 🤝 **Transação PGFN · adesão** — entrada + desconto sobre encargos (simulação genérica de editais)
 - 🧾 **e-CAC / Receita Federal** — débitos correntes (até 60×)
-- 🏪 **Simples Nacional** — PGDAS e MEI (até 60×)
+- 🏪 **Simples Nacional · ME/EPP** — parcelamento e **reparcelamento** (10%/20%, mín. R$ 300, 2–60×)
+- 🧾 **MEI · Simei** — parcelamento e **reparcelamento** (10%/20%, mín. R$ 50, 2–60×, DASN)
 - 📊 **Lucro Presumido** — IRPJ/CSLL trimestral vencido (até 60×)
 - 👤 **IRPF** — quotas da declaração anual (até 8×)
 
