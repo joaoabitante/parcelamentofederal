@@ -198,6 +198,14 @@ html:not([data-tema="claro"]):not([data-tema="escuro"]) .give-first{
 }
 .links-grid a:hover{border-color:var(--primaria); background:var(--destaque)}
 .links-grid a span{color:var(--texto-suave); font-weight:500; font-size:.85rem}
+.proj-group{margin:1rem 0 .35rem; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--primaria)}
+.proj-list{margin:.2rem 0 0; padding:0; list-style:none}
+.proj-list li{
+  margin:0 0 .55rem; padding:.65rem .75rem; border:1px solid var(--borda);
+  border-radius:.55rem; background:var(--fundo); color:var(--texto-suave); font-size:.92rem;
+}
+.proj-list li strong{color:var(--texto)}
+.proj-list a{font-weight:600}
 
 footer.rodape{
   background:var(--superficie); border-top:1px solid var(--borda);
@@ -271,30 +279,81 @@ button:focus-visible, a:focus-visible{outline:3px solid var(--primaria); outline
   </article>
 
   <article class="card">
-    <h2>O que já está na rua (não é currículo de slide)</h2>
-    <ul>
-      <li><strong>Contbit</strong> (<a href="https://contbit.tax/" target="_blank" rel="noopener noreferrer">contbit.tax</a>) — software e consultoria para escritório de contabilidade, white-label, IA no meio do processo</li>
-      <li><strong>A Hora da Elisão Fiscal</strong> — canal e simulador de regimes / reforma (<a href="https://elisaofiscal.tax/" target="_blank" rel="noopener noreferrer">elisaofiscal.tax</a>), conteúdo público em redes e YouTube</li>
-      <li><strong>Parcelamento federal</strong> — este site: Simples, MEI, reparcelamento, PGFN, e-CAC, IRPF; anônimo; SELIC embutida</li>
-      <li><strong>Prêmio Cripto</strong>, mapa mundial de tributação, simulador MEI — ferramentas grátis no ecossistema Elisão / Contbit</li>
-      <li><strong>Autista Empreende</strong> — iniciativa de impacto que ele mesmo fundou e lidera</li>
-      <li><strong>Compliance e cripto</strong> — PLD/FT, fintechs; case público de trabalho em compliance e antifraude (EULEN.APP)</li>
-      <li><strong>Carta de recomendação</strong> de uma década de assessoria contábil e gestão financeira (Foxbit Group, no hub pessoal)</li>
-      <li>Presença aberta: <a href="https://joao.abitante.net/" target="_blank" rel="noopener noreferrer">joao.abitante.net</a>, LinkedIn <a href="https://www.linkedin.com/in/joaocarlos1" target="_blank" rel="noopener noreferrer">/in/joaocarlos1</a>, X <a href="https://x.com/LibertContador" target="_blank" rel="noopener noreferrer">@LibertContador</a>, Instagram <a href="https://instagram.com/libertcontador" target="_blank" rel="noopener noreferrer">@libertcontador</a> / <a href="https://instagram.com/teaempreende" target="_blank" rel="noopener noreferrer">@teaempreende</a></li>
+    <h2>O que já está na rua (todos os projetos)</h2>
+    <p>Não é “potencial”. É URL. Lista completa do que eu construí e mantenho — hub, Contbit, Elisão, impacto e mídia.</p>
+
+    <p class="proj-group">Hub e marca pessoal</p>
+    <ul class="proj-list">
+      <li><strong><a href="https://joao.abitante.net/" target="_blank" rel="noopener noreferrer">joao.abitante.net</a></strong> — hub profissional: portfólio, PJ/CLT, cases, contato</li>
+      <li><strong>João Abitante Contabilidade</strong> — CRC-SP 320961/O-4; assessoria contábil e gestão fiscal (década de prática; carta Foxbit Group no hub)</li>
     </ul>
-    <p>Isso não é “potencial”. É URL que abre e funciona.</p>
+
+    <p class="proj-group">Contbit — software para escritórios</p>
+    <ul class="proj-list">
+      <li><strong><a href="https://contbit.tax/" target="_blank" rel="noopener noreferrer">Contbit</a></strong> (contbit.tax) — SaaS / white-label para contabilidade, com IA no processo</li>
+      <li><strong><a href="https://contbit.com.br/" target="_blank" rel="noopener noreferrer">contbit.com.br</a></strong> — site institucional / consultoria ContBit</li>
+      <li><strong><a href="https://app.contbit.tax/" target="_blank" rel="noopener noreferrer">Portal do Cliente</a></strong> (app.contbit.tax) — portal white-label: documentos, guias, marca do escritório</li>
+      <li><strong><a href="https://verificar.contbit.tax/" target="_blank" rel="noopener noreferrer">Verificar cClassTrib</a></strong> (verificar.contbit.tax) — valida cClassTrib IBS/CBS no XML da NF-e, no navegador</li>
+      <li><strong><a href="https://mei.contbit.tax/" target="_blank" rel="noopener noreferrer">Simulador Financeiro MEI</a></strong> (mei.contbit.tax) — DAS, teto e saúde financeira do MEI, anônimo</li>
+    </ul>
+
+    <p class="proj-group">Elisão Fiscal — ferramentas abertas</p>
+    <ul class="proj-list">
+      <li><strong><a href="https://elisaofiscal.tax/" target="_blank" rel="noopener noreferrer">A Hora da Elisão Fiscal</a></strong> (elisaofiscal.tax) — compara regimes e Reforma Tributária; anônimo</li>
+      <li><strong><a href="./">Parcelamento Federal</a></strong> (parcelamento.elisaofiscal.tax) — Simples, MEI, reparcelamento 10%/20%, Regularize, Transação PGFN, e-CAC, Lucro Presumido, IRPF; SELIC BCB</li>
+      <li><strong><a href="https://premio.elisaofiscal.net/" target="_blank" rel="noopener noreferrer">Prêmio Cripto</a></strong> (premio.elisaofiscal.net) — spread entre exchanges, alertas, calculadora de IR (nacional × exterior)</li>
+      <li><strong><a href="https://mundo.elisaofiscal.net/" target="_blank" rel="noopener noreferrer">Mundial Tax</a></strong> (mundo.elisaofiscal.net) — mapa-múndi interativo da tributação internacional</li>
+      <li><strong>YouTube · <a href="https://www.youtube.com/@ahoradaelisao" target="_blank" rel="noopener noreferrer">A Hora da Elisão Fiscal</a></strong> — conteúdo técnico de elisão, regimes e atualidade fiscal</li>
+    </ul>
+
+    <p class="proj-group">Consultoria, impacto e cases</p>
+    <ul class="proj-list">
+      <li><strong><a href="https://hashrateconsultoria.com.br/" target="_blank" rel="noopener noreferrer">Hash Rate Consultoria</a></strong> — consultoria financeira e contábil (boutique)</li>
+      <li><strong><a href="https://autistaempreende.com.br/" target="_blank" rel="noopener noreferrer">Autista Empreende</a></strong> — iniciativa de impacto para o autista que empreende</li>
+      <li><strong>YouTube · <a href="https://www.youtube.com/@autistaempreendetv" target="_blank" rel="noopener noreferrer">Autista Empreende TV</a></strong></li>
+      <li><strong><a href="https://eulen.app/" target="_blank" rel="noopener noreferrer">EULEN.APP</a></strong> — case de desenvolvimento em compliance e antifraude (back-office de pagamentos digitais)</li>
+      <li><strong>Foxbit Group</strong> — recomendação de 10 anos de assessoria contábil e gestão financeira (carta no hub)</li>
+    </ul>
+
+    <p class="proj-group">Produto, jogo e comunidade</p>
+    <ul class="proj-list">
+      <li><strong><a href="https://copa2026-9wy.pages.dev" target="_blank" rel="noopener noreferrer">Copa 2026</a></strong> — experiência interativa / sports analytics da Copa</li>
+      <li><strong><a href="https://pallet.abitante.net/" target="_blank" rel="noopener noreferrer">Abitante de Pallet</a></strong> — site do projeto Pokémon TCG / comunidade</li>
+      <li><strong>YouTube · <a href="https://www.youtube.com/@AbitantedePallet" target="_blank" rel="noopener noreferrer">Abitante de Pallet</a></strong></li>
+    </ul>
+
+    <p class="proj-group">Onde me achar</p>
+    <ul class="proj-list">
+      <li>LinkedIn <a href="https://www.linkedin.com/in/joaocarlos1" target="_blank" rel="noopener noreferrer">/in/joaocarlos1</a></li>
+      <li>X <a href="https://x.com/LibertContador" target="_blank" rel="noopener noreferrer">@LibertContador</a></li>
+      <li>Instagram <a href="https://instagram.com/libertcontador" target="_blank" rel="noopener noreferrer">@libertcontador</a> · <a href="https://instagram.com/teaempreende" target="_blank" rel="noopener noreferrer">@teaempreende</a></li>
+      <li>WhatsApp <a href="https://wa.me/5511994105856" target="_blank" rel="noopener noreferrer">+55 11 99410-5856</a></li>
+    </ul>
+
     <div class="pills">
-      <span>CRC-SP</span><span>PCD</span><span>PJ ou CLT</span><span>Remoto / híbrido SP</span><span>Intraempreender</span>
+      <span>CRC-SP</span><span>PCD</span><span>PJ ou CLT</span><span>Remoto / híbrido SP</span><span>Intraempreender</span><span>Give first</span>
     </div>
   </article>
 
   <article class="card">
     <h2>Give first</h2>
-    <p>Nas comunidades de startup o conselho é chato e certo: entregue antes de cobrar. Eu faço isso com ferramenta aberta — sem formulário de captura no meio do cálculo, sem vender lead de CNPJ. Quem usa o parcelamento ou a Elisão leva o valor na hora. Quem quiser contratar depois sabe onde me achar.</p>
-    <p>Hub completo, cases e contato: <a href="https://joao.abitante.net/" target="_blank" rel="noopener noreferrer">joao.abitante.net</a>.</p>
+    <p>Nas comunidades de startup o conselho é chato e certo: entregue antes de cobrar. Eu faço isso com ferramenta aberta — sem formulário de captura no meio do cálculo, sem vender lead de CNPJ. Quem usa o parcelamento, a Elisão ou o MEI leva o valor na hora. Quem quiser contratar depois sabe onde me achar.</p>
+    <p>Hub completo e contato: <a href="https://joao.abitante.net/" target="_blank" rel="noopener noreferrer">joao.abitante.net</a>.</p>
+    <div class="links-grid" style="margin-top:1rem">
+      <a href="https://joao.abitante.net/" target="_blank" rel="noopener noreferrer">joao.abitante.net <span>hub →</span></a>
+      <a href="https://contbit.tax/" target="_blank" rel="noopener noreferrer">contbit.tax <span>SaaS →</span></a>
+      <a href="https://elisaofiscal.tax/" target="_blank" rel="noopener noreferrer">elisaofiscal.tax <span>regimes →</span></a>
+      <a href="./">parcelamento.elisaofiscal.tax <span>este site →</span></a>
+      <a href="https://premio.elisaofiscal.net/" target="_blank" rel="noopener noreferrer">premio.elisaofiscal.net <span>cripto →</span></a>
+      <a href="https://mundo.elisaofiscal.net/" target="_blank" rel="noopener noreferrer">mundo.elisaofiscal.net <span>mapa →</span></a>
+      <a href="https://mei.contbit.tax/" target="_blank" rel="noopener noreferrer">mei.contbit.tax <span>MEI →</span></a>
+      <a href="https://verificar.contbit.tax/" target="_blank" rel="noopener noreferrer">verificar.contbit.tax <span>cClassTrib →</span></a>
+      <a href="https://app.contbit.tax/" target="_blank" rel="noopener noreferrer">app.contbit.tax <span>portal →</span></a>
+      <a href="https://autistaempreende.com.br/" target="_blank" rel="noopener noreferrer">autistaempreende.com.br <span>impacto →</span></a>
+    </div>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://joao.abitante.net/#contato" target="_blank" rel="noopener noreferrer">Falar comigo →</a>
-      <a class="btn btn-ghost" href="https://joao.abitante.net/" target="_blank" rel="noopener noreferrer">Ver portfólio</a>
+      <a class="btn btn-ghost" href="https://joao.abitante.net/" target="_blank" rel="noopener noreferrer">Ver hub</a>
       <a class="btn btn-ghost" href="./">Usar o simulador</a>
     </div>
   </article>
