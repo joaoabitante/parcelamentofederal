@@ -42,7 +42,7 @@
     ],
     avisosFixos: [
       'Se você copiou o valor já CONSOLIDADO do Regularize (com multa, juros e encargo), informe multa 0%, zere o encargo e use a data de hoje como vencimento para não duplicar acréscimos.',
-      'Transações especiais da PGFN (ex.: transação por adesão) têm regras próprias de entrada e desconto e NÃO são cobertas por esta simulação.',
+      'Para simular entrada e desconto de transação por adesão, use o módulo «Transação PGFN · adesão» (regras genéricas de edital).',
       'Parcelamento é confessado e o descumprimento de 3 parcelas causa rescisão (Lei 10.522/2002, art. 14-B).'
     ],
     basesLegais: [

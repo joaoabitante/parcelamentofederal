@@ -1,5 +1,22 @@
 # DEV-LOG — parcelamentofederal (parcelamento.elisaofiscal.tax)
 
+## 2026-07-10 - Transação PGFN + comparação (v1.2.0)
+
+### Adicionado
+- `modules/transacao-pgfn.js`: simulação genérica de transação por adesão (entrada %, desconto sobre encargos, tetos 65%/70%, entrada até 6×/12×, saldo até 60×).
+- Motor `calcular` com `modoTransacao`: breakdown com desconto/entrada/saldo; parcelas de entrada (nominal) + saldo com SELIC e offset de mês após a entrada.
+- UI: guardar até 3 cenários em `estado.comparacoes` (RAM da sessão); painel comparativo na etapa 3.
+
+### Decisões técnicas
+- **Não amarra a um edital fixo**: campos de % editáveis + avisos fortes — editais mudam; o valor é planejamento, não adesão automática.
+- **Entrada sem SELIC embutida** na simulação (valor nominal das cotas de entrada); documentado em aviso — evita fingir precisão de guia oficial.
+- **Desconto só sobre encargos** (multa+juros+encargo), limitado ao teto % da dívida do perfil — espelha a lógica típica dos editais sem hardcodar faixas de CAPAG.
+- Comparação em memória (não localStorage) para não guardar valores de débito no disco.
+
+### Pendências
+- Conferir percentuais/prazos do edital PGFN vigente quando o usuário for divulgar o módulo.
+- Opcional v1.3: presets por edital (JSON local versionado) sem rede.
+
 ## 2026-07-10 - SELIC oficial automática (v1.1.0)
 
 ### Adicionado

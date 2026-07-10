@@ -5,6 +5,7 @@
 Simulador **gratuito, 100% anônimo e client-side** de parcelamentos de tributos federais, para pessoas físicas e contadores:
 
 - 🏛️ **Regularize / PGFN** — dívida ativa da União (até 60×)
+- 🤝 **Transação PGFN · adesão** — entrada + desconto sobre encargos (simulação genérica de editais)
 - 🧾 **e-CAC / Receita Federal** — débitos correntes (até 60×)
 - 🏪 **Simples Nacional** — PGDAS e MEI (até 60×)
 - 📊 **Lucro Presumido** — IRPJ/CSLL trimestral vencido (até 60×)

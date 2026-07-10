@@ -2,6 +2,14 @@
 
 Checklist de revisão (perspectiva de dev sênior). Qualquer ❌ bloqueia release.
 
+## v1.2.0 (2026-07-10) — Transação PGFN + comparação em sessão
+
+- ✅ **Anonimato preservado** — comparação só em `estado.comparacoes` (RAM); sem localStorage de valores/datas; zero `fetch` em arquivos do browser; novo módulo `transacao-pgfn.js` é script estático clássico.
+- ✅ **DOM seguro** — painel de comparação e tabelas de entrada usam helper `el()` / `textContent`.
+- ✅ **Validação** — entrada % e desconto % em [0,100]; parcelas de entrada ≤ teto do perfil; desconto limitado a encargos e ao teto % da dívida; centavos inteiros.
+- ⚠️ **Simulação genérica de edital** — não substitui Regularize/edital vigente; disclaimers no módulo e na UI. Não bloqueia release (ferramenta de planejamento).
+- ⚠️ **Entrada sem SELIC embutida** — simplificação documentada em aviso no resultado.
+
 ## v1.1.0 (2026-07-10) — pipeline automático da SELIC
 
 - ✅ **Anonimato do usuário preservado** — o navegador continua sem fazer nenhuma requisição externa; o único `fetch` real do repositório está em `scripts/atualizar-selic.mjs`, que roda apenas no GitHub Actions e NÃO é referenciado pelo `index.html`. A regra de grep passa a ser: nenhum `fetch(`/`XMLHttpRequest`/`sendBeacon` em arquivos carregados pelo navegador (`index.html`, `lib/`, `modules/`, `data/`).

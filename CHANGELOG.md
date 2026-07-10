@@ -2,6 +2,20 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.2.0] - 2026-07-10
+
+### Adicionado
+- Módulo **Transação PGFN · adesão**: entrada (%) sobre consolidado sem desconto, desconto sobre encargos com teto por perfil (65% / 70%), parcelas de entrada e saldo em até 60× com SELIC.
+- Comparar até **3 simulações na sessão** (memória do navegador — sem localStorage de valores, sem rede).
+- Badge «novo» no cartão da transação; marca alinhada a `parcelamento.elisaofiscal.tax`.
+
+### Alterado
+- Motor de cálculo compartilhado aceita `modoTransacao` (entrada, desconto, offset de meses do saldo após a entrada).
+- Módulo Regularize aponta para o novo módulo de transação em vez de só avisar “não coberto”.
+
+### Privacidade
+- Comparações ficam só em RAM da aba; fechar a aba apaga. Continua zero `fetch` no código servido ao browser.
+
 ## [1.1.0] - 2026-07-10
 
 ### Adicionado

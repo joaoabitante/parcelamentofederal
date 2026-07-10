@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Simulador gratuito e 100% anônimo de parcelamentos de tributos federais (PGFN, e-CAC, Simples Nacional, Lucro Presumido e IRPF). Tudo roda no seu navegador — nenhum dado é enviado a servidor algum.">
-<title>elisaofiscal.tax — simulador anônimo de parcelamentos federais</title>
+<meta name="description" content="Simulador gratuito e 100% anônimo de parcelamentos federais: Regularize/PGFN, Transação por adesão, e-CAC, Simples, Lucro Presumido e IRPF. Tudo no navegador — zero envio de dados.">
+<title>parcelamento.elisaofiscal.tax — simulador anônimo de parcelamentos federais</title>
 <style>
 /* ============ tema (claro/escuro) ============ */
 :root {
@@ -196,6 +196,26 @@ dialog {
 }
 dialog::backdrop { background: rgba(0, 0, 0, .55); }
 
+
+/* comparação em memória */
+.painel-comp {
+  background: var(--destaque); border: 1px dashed var(--primaria);
+  border-radius: .8rem; padding: 1rem; margin-bottom: 1rem;
+}
+.painel-comp h3 { margin-top: 0; }
+.chip-salvo {
+  display: inline-flex; flex-wrap: wrap; gap: .4rem; margin: .4rem 0;
+}
+.chip-salvo span {
+  background: var(--superficie); border: 1px solid var(--borda);
+  border-radius: 1rem; padding: .25rem .7rem; font-size: .82rem;
+}
+.badge-novo {
+  font-size: .68rem; background: var(--primaria); color: var(--primaria-texto);
+  border-radius: .8rem; padding: .12rem .5rem; margin-left: .35rem; font-weight: 700;
+}
+.entrada-destaque { color: var(--primaria); font-weight: 700; }
+
 /* ============ impressão ============ */
 @media print {
   header.topo .acoes-topo, .passos, .selo, .acoes, .barra-disclaimer,
@@ -211,7 +231,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
 
 <header class="topo">
   <div class="marca">
-    <h1>elisaofiscal<span class="dominio">.tax</span></h1>
+    <h1>parcelamento.elisaofiscal<span class="dominio">.tax</span></h1>
     <p class="tagline">Simulador anônimo de parcelamentos de tributos federais</p>
   </div>
   <div class="acoes-topo nao-imprimir">
@@ -256,8 +276,18 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
   <section id="etapa-3" hidden aria-labelledby="titulo-etapa-3" aria-live="polite">
     <h2 id="titulo-etapa-3">Resultado da simulação</h2>
     <div id="resultado"></div>
+    <div id="painel-comparacao" class="painel-comp nao-imprimir" hidden>
+      <h3>📊 Comparar simulações (só nesta sessão)</h3>
+      <p class="destaque-fonte">Até 3 cenários em memória — nada é enviado nem gravado em disco. Feche a aba e some.</p>
+      <div id="lista-comparacao" class="chip-salvo"></div>
+      <div class="tabela-rolagem" id="tabela-comparacao"></div>
+      <div class="acoes">
+        <button type="button" id="btn-limpar-comp">Limpar comparações</button>
+      </div>
+    </div>
     <div class="acoes nao-imprimir">
       <button type="button" class="primario" id="btn-imprimir">🖨️ Exportar / Imprimir (PDF local)</button>
+      <button type="button" id="btn-guardar-comp">📌 Guardar para comparar</button>
       <button type="button" id="btn-voltar-2">← Ajustar valores</button>
       <button type="button" id="btn-nova">Nova simulação</button>
     </div>
@@ -301,6 +331,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
 <script src="lib/calculo-juros-selic.js"></script>
 <script src="lib/calculo-multa-mora.js"></script>
 <script src="modules/regularize.js"></script>
+<script src="modules/transacao-pgfn.js"></script>
 <script src="modules/ecac.js"></script>
 <script src="modules/simples-nacional.js"></script>
 <script src="modules/lucro-presumido.js"></script>
@@ -322,10 +353,17 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
  * flutuante; percentuais só viram centavos com Math.round no final.
  * ===================================================================== */
 
-const APP_VERSAO = '1.1.0';
+const APP_VERSAO = '1.2.0';
 const CHAVE_TEMA = 'elisao.tema';
 const CHAVE_ULTIMO = 'elisao.ultimo-modulo';
 const CHANGELOG = [
+  {
+    versao: '1.2.0', data: '2026-07-10', itens: [
+      'Novo módulo: Transação PGFN por adesão — entrada (%), desconto sobre encargos com teto por perfil e saldo em até 60× (simulação genérica de editais).',
+      'Comparar até 3 simulações na mesma sessão (memória do navegador, sem gravar em disco).',
+      'Marca e título alinhados a parcelamento.elisaofiscal.tax.'
+    ]
+  },
   {
     versao: '1.1.0', data: '2026-07-10', itens: [
       'Tabela SELIC agora é oficial (Banco Central, série SGS 4390) e se atualiza sozinha todo mês via GitHub Actions — o site continua 100% estático e anônimo.',
@@ -430,6 +468,9 @@ function calcular(mod, entradas, nParcelas) {
   const erros = [];
   const avisos = [];
   const { valorCentavos, venc, ref, multaPercent, extras, perfil } = entradas;
+  const nEntrada = Number.isInteger(entradas.nEntrada) ? entradas.nEntrada : 1;
+  const entradaPct = Number.isFinite(entradas.entradaPct) ? entradas.entradaPct : 0;
+  const descontoPct = Number.isFinite(entradas.descontoPct) ? entradas.descontoPct : 0;
 
   // ---- validações de entrada (segurança: nada de NaN/negativo/overflow) ----
   if (valorCentavos === null || !Number.isSafeInteger(valorCentavos)) {
@@ -452,11 +493,21 @@ function calcular(mod, entradas, nParcelas) {
   if (venc && ref && mod.moraAplicavel && antes(ref, venc)) {
     erros.push('A data de referência não pode ser anterior ao vencimento. Para débito ainda não vencido não há multa/juros de mora.');
   }
+  if (mod.modoTransacao) {
+    if (!Number.isFinite(entradaPct) || entradaPct < 0 || entradaPct > 100) {
+      erros.push('A entrada (%) deve estar entre 0 e 100.');
+    }
+    if (!Number.isFinite(descontoPct) || descontoPct < 0 || descontoPct > 100) {
+      erros.push('O desconto sobre encargos (%) deve estar entre 0 e 100.');
+    }
+  }
   if (erros.length) return { erros };
 
   const dataConsolidacao = mod.usaReferencia === false ? venc : ref;
   const ymVenc = { ano: venc.ano, mes: venc.mes };
   const ymRef = { ano: dataConsolidacao.ano, mes: dataConsolidacao.mes };
+  const perfilObj = mod.perfis.find(p => p.id === perfil) || mod.perfis[0];
+  const minimo = perfilObj.parcelaMinimaCentavos;
 
   // ---- consolidação: principal + multa + juros (+ acréscimos do módulo) ----
   let projecaoMeses = 0;
@@ -477,7 +528,8 @@ function calcular(mod, entradas, nParcelas) {
     { rotulo: 'Juros SELIC até a consolidação (' + pct(jurosPercent) + ')', valor: jurosC }
   ];
 
-  let consolidado = subtotal;
+  let extrasTotal = 0;
+  let consolidadoBruto = subtotal;
   for (const campo of (mod.camposExtras || [])) {
     const v = extras[campo.id];
     if (!Number.isFinite(v) || v < campo.min || v > campo.max) {
@@ -485,19 +537,87 @@ function calcular(mod, entradas, nParcelas) {
     }
     // acréscimos do módulo (ex.: encargo legal) incidem sobre o subtotal
     const extraC = Math.round(subtotal * v / 100);
-    consolidado += extraC;
+    extrasTotal += extraC;
+    consolidadoBruto += extraC;
     breakdown.push({ rotulo: campo.label.replace(' (%)', '') + ' (' + pct(v) + ')', valor: extraC });
   }
 
-  // ---- regras de piso da modalidade ----
-  const perfilObj = mod.perfis.find(p => p.id === perfil) || mod.perfis[0];
-  const minimo = perfilObj.parcelaMinimaCentavos;
-  const baseParcela = Math.floor(consolidado / nParcelas);
-  if (baseParcela < minimo) {
-    const nMax = Math.max(1, Math.floor(consolidado / minimo));
+  let consolidado = consolidadoBruto;
+  let entradaTotal = 0;
+  let descontoAplicado = 0;
+  let saldoParcelar = consolidadoBruto;
+  let parcelasEntrada = [];
+  let metaTransacao = null;
+
+  // ---- Transação PGFN: entrada (sem desconto) + desconto sobre encargos + saldo ----
+  if (mod.modoTransacao) {
+    const maxEnt = perfilObj.maxParcelasEntrada || 6;
+    if (!Number.isInteger(nEntrada) || nEntrada < 1 || nEntrada > maxEnt) {
+      return { erros: ['As parcelas de entrada devem ser entre 1 e ' + maxEnt + ' para este perfil.'] };
+    }
+    const tetoPct = Number.isFinite(perfilObj.tetoDescontoDividaPct) ? perfilObj.tetoDescontoDividaPct : 65;
+    const encargos = multaC + jurosC + extrasTotal;
+    const tetoDesconto = Math.floor(consolidadoBruto * tetoPct / 100);
+    descontoAplicado = Math.min(
+      Math.round(encargos * descontoPct / 100),
+      encargos,
+      tetoDesconto
+    );
+    // entrada sobre consolidado SEM desconto (padrão dos editais)
+    entradaTotal = Math.round(consolidadoBruto * entradaPct / 100);
+    if (entradaTotal > consolidadoBruto - descontoAplicado) {
+      entradaTotal = Math.max(0, consolidadoBruto - descontoAplicado);
+    }
+    saldoParcelar = consolidadoBruto - descontoAplicado - entradaTotal;
+    if (saldoParcelar < 0) saldoParcelar = 0;
+
+    breakdown.push({ rotulo: 'Desconto sobre encargos (limitado ao teto de ' + pct(tetoPct) + ' da dívida)', valor: -descontoAplicado });
+    breakdown.push({ rotulo: 'Entrada (' + pct(entradaPct) + ' sobre consolidado sem desconto)', valor: entradaTotal });
+    breakdown.push({ rotulo: 'Saldo a parcelar após entrada e desconto', valor: saldoParcelar });
+
+    consolidado = consolidadoBruto - descontoAplicado; // valor da dívida após desconto (entrada + saldo)
+
+    // entrada em N prestações (sem SELIC adicional nas cotas de entrada — simplificação documentada)
+    if (entradaTotal > 0) {
+      const baseE = Math.floor(entradaTotal / nEntrada);
+      let restE = entradaTotal;
+      for (let k = 1; k <= nEntrada; k++) {
+        const base = (k === nEntrada) ? restE : baseE;
+        restE -= base;
+        const jp = window.CalcSelic.jurosParcelaPercent(ymRef, k);
+        projecaoMeses = Math.max(projecaoMeses, jp.mesesProjetados);
+        // entrada: valor nominal da cota (sem juros SELIC embutidos — editais cobram atualização própria)
+        parcelasEntrada.push({
+          k: k, mes: jp.mesPagamento, jurosPercent: 0, valor: base, saldoApos: restE, tipo: 'entrada'
+        });
+      }
+      avisos.push('Parcelas de entrada sem SELIC embutida nesta simulação (valor nominal da entrada). A PGFN pode atualizar valores na adesão — confira o edital.');
+    }
+
+    metaTransacao = {
+      consolidadoBruto, descontoAplicado, entradaTotal, saldoParcelar,
+      entradaPct, descontoPct, nEntrada, tetoPct, encargos
+    };
+
+    if (descontoAplicado === tetoDesconto && descontoPct > 0) {
+      avisos.push('Desconto limitado ao teto de ' + pct(tetoPct) + ' do valor total da dívida para este perfil (regra típica dos editais).');
+    }
+  }
+
+  // ---- regras de piso da modalidade (sobre o valor que vira prestação ordinária) ----
+  const valorParaParcelas = mod.modoTransacao ? saldoParcelar : consolidado;
+
+  if (mod.modoTransacao && valorParaParcelas === 0 && nParcelas > 1) {
+    // só entrada / desconto total — força 1 "parcela" simbólica zero
+    nParcelas = 1;
+  }
+
+  const baseParcela = valorParaParcelas === 0 ? 0 : Math.floor(valorParaParcelas / nParcelas);
+  if (valorParaParcelas > 0 && baseParcela < minimo) {
+    const nMax = Math.max(1, Math.floor(valorParaParcelas / minimo));
     return {
-      erros: ['Com ' + nParcelas + ' parcelas, cada uma ficaria abaixo do mínimo de ' + dinheiro(minimo) +
-        ' para ' + perfilObj.label + '. Para este débito o máximo é de ' + nMax + ' parcela(s).']
+      erros: ['Com ' + nParcelas + ' parcelas do saldo, cada uma ficaria abaixo do mínimo de ' + dinheiro(minimo) +
+        ' para ' + perfilObj.label + '. Para este saldo o máximo é de ' + nMax + ' parcela(s).']
     };
   }
   if (mod.valorMinimoParcelamentoCentavos && consolidado < mod.valorMinimoParcelamentoCentavos && nParcelas > 1) {
@@ -507,21 +627,34 @@ function calcular(mod, entradas, nParcelas) {
     };
   }
 
-  // ---- prestações: base fixa + SELIC individual por mês de pagamento ----
+  // ---- prestações do saldo: base fixa + SELIC individual por mês de pagamento ----
   // (Lei 10.522/2002, art. 13, § único — ver lib/calculo-juros-selic.js)
+  // Na transação, o mês 1 do saldo começa APÓS as cotas de entrada (offset).
+  const offsetMes = mod.modoTransacao ? nEntrada : 0;
   const parcelas = [];
-  let saldo = consolidado;
-  let totalPago = 0;
-  for (let k = 1; k <= nParcelas; k++) {
-    // última parcela absorve o resto da divisão para fechar o total exato
-    const base = (k === nParcelas) ? saldo : baseParcela;
-    const jp = window.CalcSelic.jurosParcelaPercent(ymRef, k);
-    projecaoMeses = Math.max(projecaoMeses, jp.mesesProjetados);
-    const valor = base + Math.round(base * jp.percent / 100);
-    totalPago += valor;
-    saldo -= base;
-    parcelas.push({ k, mes: jp.mesPagamento, jurosPercent: jp.percent, valor, saldoApos: saldo });
+  let saldo = valorParaParcelas;
+  let totalSaldoPago = 0;
+  if (valorParaParcelas === 0) {
+    // nada a parcelar no saldo
+  } else {
+    for (let k = 1; k <= nParcelas; k++) {
+      const base = (k === nParcelas) ? saldo : baseParcela;
+      const jp = window.CalcSelic.jurosParcelaPercent(ymRef, k + offsetMes);
+      projecaoMeses = Math.max(projecaoMeses, jp.mesesProjetados);
+      const valor = base + Math.round(base * jp.percent / 100);
+      totalSaldoPago += valor;
+      saldo -= base;
+      parcelas.push({ k, mes: jp.mesPagamento, jurosPercent: jp.percent, valor, saldoApos: saldo, tipo: 'saldo' });
+    }
   }
+
+  const totalEntradaPago = parcelasEntrada.reduce((s, p) => s + p.valor, 0);
+  const totalPago = totalEntradaPago + totalSaldoPago;
+  // base sem juros de parcelamento = consolidado após desconto (entrada + principal do saldo)
+  const baseSemJurosParcel = mod.modoTransacao
+    ? (entradaTotal + valorParaParcelas)
+    : consolidado;
+  const jurosParcelamento = totalPago - baseSemJurosParcel;
 
   // ---- avisos ----
   for (const a of (mod.avisosFixos || [])) avisos.push(a);
@@ -537,9 +670,13 @@ function calcular(mod, entradas, nParcelas) {
   avisos.push('Tabela SELIC local atualizada em ' + meta.atualizadoEm + ' — confira sempre a taxa vigente no site do Banco Central.');
 
   return {
-    erros: [], avisos, breakdown, consolidado, parcelas, totalPago,
-    jurosParcelamento: totalPago - consolidado, projecaoMeses,
-    minimoParcela: minimo, perfilLabel: perfilObj.label
+    erros: [], avisos, breakdown,
+    consolidado: mod.modoTransacao ? consolidado : consolidado,
+    consolidadoBruto: mod.modoTransacao ? consolidadoBruto : consolidado,
+    parcelas, parcelasEntrada, totalPago, jurosParcelamento, projecaoMeses,
+    minimoParcela: minimo, perfilLabel: perfilObj.label,
+    metaTransacao,
+    entradaTotal, descontoAplicado, saldoParcelar: valorParaParcelas
   };
 }
 
@@ -547,7 +684,7 @@ function calcular(mod, entradas, nParcelas) {
  * INTERFACE — wizard de 3 etapas
  * ===================================================================== */
 const MODULOS = window.ELISAO_MODULOS || [];
-const estado = { modulo: null, multaEditada: false, ultimoResultado: null };
+const estado = { modulo: null, multaEditada: false, ultimoResultado: null, comparacoes: [] };
 
 function irParaEtapa(n) {
   for (const i of [1, 2, 3]) {
@@ -571,6 +708,7 @@ function montarCartoes() {
   for (const mod of MODULOS) {
     const btn = el('button', { type: 'button', class: 'cartao-modulo', onclick: () => abrirModulo(mod) },
       el('div', { class: 'nome' }, mod.icone + ' ' + mod.nome,
+        (mod.id === 'transacao-pgfn') ? el('span', { class: 'badge-novo' }, 'novo') : null,
         (ultimo === mod.id) ? el('span', { class: 'badge-ultimo' }, 'último usado') : null),
       el('div', { class: 'desc' }, mod.descricao)
     );
@@ -620,8 +758,27 @@ function abrirModulo(mod) {
     ));
   }
 
+  if (mod.modoTransacao) {
+    const maxEnt0 = (mod.perfis[0] && mod.perfis[0].maxParcelasEntrada) || 6;
+    campos.append(el('div', { class: 'campo' },
+      el('label', { for: 'f-entrada-pct' }, 'Entrada sobre o consolidado (%)',
+        el('span', { class: 'ajuda' }, mod.entrada.ajuda)),
+      el('input', { id: 'f-entrada-pct', type: 'number', min: String(mod.entrada.min), max: String(mod.entrada.max), step: '0.01', value: String(mod.entrada.percentPadrao) })
+    ));
+    campos.append(el('div', { class: 'campo' },
+      el('label', { for: 'f-entrada-n' }, 'Parcelas da entrada',
+        el('span', { class: 'ajuda' }, 'Teto depende do perfil (ex.: 6× geral, 12× PF/MEI/ME/EPP). Máx. inicial: ' + maxEnt0 + '.')),
+      el('input', { id: 'f-entrada-n', type: 'number', min: '1', max: String(maxEnt0), step: '1', value: '1' })
+    ));
+    campos.append(el('div', { class: 'campo' },
+      el('label', { for: 'f-desconto-pct' }, 'Desconto sobre encargos (%)',
+        el('span', { class: 'ajuda' }, mod.desconto.ajuda)),
+      el('input', { id: 'f-desconto-pct', type: 'number', min: String(mod.desconto.min), max: String(mod.desconto.max), step: '0.01', value: String(mod.desconto.percentPadrao) })
+    ));
+  }
+
   campos.append(el('div', { class: 'campo' },
-    el('label', { for: 'f-parcelas' }, 'Número de parcelas desejado',
+    el('label', { for: 'f-parcelas' }, mod.modoTransacao ? 'Parcelas do saldo (após entrada)' : 'Número de parcelas desejado',
       el('span', { class: 'ajuda' }, 'Limite legal desta modalidade: ' + mod.maxParcelas + ' parcela(s).')),
     el('input', { id: 'f-parcelas', type: 'number', min: '1', max: String(mod.maxParcelas), step: '1', value: String(Math.min(12, mod.maxParcelas)) })
   ));
@@ -664,6 +821,20 @@ function abrirModulo(mod) {
     if (refEl) refEl.addEventListener('change', atualizar);
   }
 
+  // ajusta teto de parcelas de entrada ao trocar perfil (transação)
+  if (mod.modoTransacao) {
+    const syncEntrada = () => {
+      const sel = document.querySelector('input[name="perfil"]:checked');
+      const p = mod.perfis.find(x => x.id === (sel ? sel.value : mod.perfis[0].id)) || mod.perfis[0];
+      const inp = $('#f-entrada-n');
+      if (!inp) return;
+      inp.max = String(p.maxParcelasEntrada || 6);
+      if (Number(inp.value) > (p.maxParcelasEntrada || 6)) inp.value = String(p.maxParcelasEntrada || 6);
+    };
+    document.querySelectorAll('input[name="perfil"]').forEach(r => r.addEventListener('change', syncEntrada));
+    syncEntrada();
+  }
+
   $('#lista-erros').hidden = true;
   irParaEtapa(2);
 }
@@ -676,14 +847,23 @@ function lerEntradas(mod) {
   }
   const venc = parseDataInput($('#f-venc').value);
   const refEl = $('#f-ref');
-  return {
+  const out = {
     valorCentavos: parseDinheiro($('#f-valor').value),
     venc,
     ref: refEl ? parseDataInput(refEl.value) : venc,
     multaPercent: mod.moraAplicavel ? Number($('#f-multa').value) : 0,
     extras,
-    perfil: perfilSel ? perfilSel.value : mod.perfis[0].id
+    perfil: perfilSel ? perfilSel.value : mod.perfis[0].id,
+    entradaPct: 0,
+    descontoPct: 0,
+    nEntrada: 1
   };
+  if (mod.modoTransacao) {
+    out.entradaPct = Number($('#f-entrada-pct').value);
+    out.descontoPct = Number($('#f-desconto-pct').value);
+    out.nEntrada = Math.trunc(Number($('#f-entrada-n').value));
+  }
+  return out;
 }
 
 /* ---------- etapa 3: resultado ---------- */
@@ -701,8 +881,13 @@ function opcoesComparativo(mod, nEscolhido) {
 function renderResultado(mod, entradas, nParcelas, r) {
   const alvo = $('#resultado');
   alvo.textContent = '';
+  estado.ultimoResultado = { mod, entradas, nParcelas, r };
 
   const dataConsolid = mod.usaReferencia === false ? entradas.venc : entradas.ref;
+  const nEnt = (r.parcelasEntrada && r.parcelasEntrada.length) || 0;
+  const rotuloTotal = mod.modoTransacao
+    ? ('Total pago (entrada ' + nEnt + '× + saldo ' + nParcelas + '×)')
+    : ('Total pago em ' + nParcelas + ' parcela(s)');
 
   // resumo da consolidação
   alvo.append(el('div', { class: 'painel' },
@@ -712,14 +897,21 @@ function renderResultado(mod, entradas, nParcelas, r) {
       ' · Impresso de simulação gerado localmente.'),
     el('div', { class: 'tabela-rolagem' }, el('table', null,
       el('tbody', null,
-        r.breakdown.map(b => el('tr', null, el('td', null, b.rotulo), el('td', null, dinheiro(b.valor)))),
-        el('tr', { class: 'total' }, el('td', null, 'Valor consolidado'), el('td', null, dinheiro(r.consolidado)))
+        r.breakdown.map(b => el('tr', null,
+          el('td', null, b.rotulo),
+          el('td', { class: b.valor < 0 ? 'entrada-destaque' : null }, dinheiro(b.valor))
+        )),
+        el('tr', { class: 'total' }, el('td', null, mod.modoTransacao ? 'Dívida após desconto (entrada + saldo)' : 'Valor consolidado'),
+          el('td', null, dinheiro(r.consolidado)))
       )
     )),
     el('dl', { class: 'resumo' },
-      linhaResumo('Total pago em ' + nParcelas + ' parcela(s)', dinheiro(r.totalPago), true),
+      linhaResumo(rotuloTotal, dinheiro(r.totalPago), true),
       linhaResumo('Juros do parcelamento (SELIC projetada)', dinheiro(r.jurosParcelamento)),
-      linhaResumo('Parcela mínima da modalidade', dinheiro(r.minimoParcela))
+      linhaResumo('Parcela mínima da modalidade', dinheiro(r.minimoParcela)),
+      mod.modoTransacao && r.metaTransacao
+        ? linhaResumo('Desconto aplicado', dinheiro(r.descontoAplicado || 0))
+        : null
     )
   ));
 
@@ -731,9 +923,30 @@ function renderResultado(mod, entradas, nParcelas, r) {
     ));
   }
 
+  // tabela de entrada (transação)
+  if (r.parcelasEntrada && r.parcelasEntrada.length) {
+    alvo.append(el('div', { class: 'painel' },
+      el('h3', null, 'Parcelas de entrada (' + r.parcelasEntrada.length + '×)'),
+      el('div', { class: 'tabela-rolagem' }, el('table', null,
+        el('thead', null, el('tr', null,
+          el('th', { scope: 'col' }, 'Nº'), el('th', { scope: 'col' }, 'Mês'),
+          el('th', { scope: 'col' }, 'Tipo'), el('th', { scope: 'col' }, 'Valor'),
+          el('th', { scope: 'col' }, 'Saldo da entrada'))),
+        el('tbody', null, r.parcelasEntrada.map(p => el('tr', null,
+          el('td', null, String(p.k)), el('td', null, rotuloMes(p.mes)),
+          el('td', null, 'Entrada'), el('td', null, dinheiro(p.valor)),
+          el('td', null, dinheiro(p.saldoApos))
+        ))),
+        el('tbody', null, el('tr', { class: 'total' },
+          el('td', null, 'Total entrada'), el('td', null, ''), el('td', null, ''),
+          el('td', null, dinheiro(r.entradaTotal || 0)), el('td', null, '')))
+      ))
+    ));
+  }
+
   // tabela de parcelas
   alvo.append(el('div', { class: 'painel' },
-    el('h3', null, 'Tabela de parcelas (' + nParcelas + '×)'),
+    el('h3', null, mod.modoTransacao ? ('Tabela do saldo parcelado (' + nParcelas + '×)') : ('Tabela de parcelas (' + nParcelas + '×)')),
     el('div', { class: 'tabela-rolagem' }, el('table', null,
       el('thead', null, el('tr', null,
         el('th', { scope: 'col' }, 'Nº'), el('th', { scope: 'col' }, 'Mês'),
@@ -755,10 +968,13 @@ function renderResultado(mod, entradas, nParcelas, r) {
   for (const n of opcoesComparativo(mod, nParcelas)) {
     const rc = (n === nParcelas) ? r : calcular(mod, entradas, n);
     if (rc.erros && rc.erros.length) continue; // opção inválida p/ este débito (ex.: abaixo da parcela mínima)
+    const pFirst = (rc.parcelas && rc.parcelas.length) ? rc.parcelas[0].valor
+      : ((rc.parcelasEntrada && rc.parcelasEntrada[0]) ? rc.parcelasEntrada[0].valor : 0);
+    const pLast = (rc.parcelas && rc.parcelas.length) ? rc.parcelas[rc.parcelas.length - 1].valor : pFirst;
     linhas.push(el('tr', null,
       el('td', null, n + '×' + (n === nParcelas ? ' (escolhida)' : '')),
-      el('td', null, dinheiro(rc.parcelas[0].valor)),
-      el('td', null, dinheiro(rc.parcelas[rc.parcelas.length - 1].valor)),
+      el('td', null, dinheiro(pFirst)),
+      el('td', null, dinheiro(pLast)),
       el('td', null, dinheiro(rc.totalPago)),
       el('td', null, dinheiro(rc.jurosParcelamento))
     ));
@@ -776,8 +992,74 @@ function renderResultado(mod, entradas, nParcelas, r) {
   ));
 
   alvo.append(el('p', { class: 'destaque-fonte' },
-    'Simulação gerada localmente pelo elisaofiscal.tax v' + APP_VERSAO +
+    'Simulação gerada localmente por parcelamento.elisaofiscal.tax v' + APP_VERSAO +
     ' — não é documento oficial e não foi transmitida a nenhum órgão.'));
+  renderPainelComparacao();
+}
+
+/* ---------- comparação em memória (máx. 3, só na sessão) ---------- */
+function rotuloComp(item) {
+  const t = item.mod.modoTransacao
+    ? (item.mod.nome + ' · ent.' + (item.entradas.nEntrada || 1) + '× + ' + item.nParcelas + '×')
+    : (item.mod.nome + ' · ' + item.nParcelas + '×');
+  return t + ' · ' + dinheiro(item.r.totalPago);
+}
+
+function renderPainelComparacao() {
+  const painel = $('#painel-comparacao');
+  const lista = $('#lista-comparacao');
+  const tab = $('#tabela-comparacao');
+  if (!painel) return;
+  if (!estado.comparacoes.length) {
+    painel.hidden = true;
+    return;
+  }
+  painel.hidden = false;
+  lista.textContent = '';
+  estado.comparacoes.forEach((c, i) => {
+    lista.append(el('span', null, (i + 1) + '. ' + rotuloComp(c)));
+  });
+  tab.textContent = '';
+  tab.append(el('table', null,
+    el('thead', null, el('tr', null,
+      el('th', null, '#'), el('th', null, 'Modalidade'), el('th', null, 'Perfil'),
+      el('th', null, 'Consolidado'), el('th', null, 'Total pago'), el('th', null, 'Juros parc.'),
+      el('th', null, '1ª prest. saldo'))),
+    el('tbody', null, estado.comparacoes.map((c, i) => {
+      const p0 = (c.r.parcelas && c.r.parcelas[0]) ? c.r.parcelas[0].valor
+        : (c.r.parcelasEntrada && c.r.parcelasEntrada[0] ? c.r.parcelasEntrada[0].valor : 0);
+      return el('tr', null,
+        el('td', null, String(i + 1)),
+        el('td', null, c.mod.nome),
+        el('td', null, c.r.perfilLabel),
+        el('td', null, dinheiro(c.r.consolidado)),
+        el('td', null, dinheiro(c.r.totalPago)),
+        el('td', null, dinheiro(c.r.jurosParcelamento)),
+        el('td', null, dinheiro(p0))
+      );
+    }))
+  ));
+}
+
+function guardarComparacao() {
+  const u = estado.ultimoResultado;
+  if (!u) {
+    $('#status-app').textContent = 'Calcule uma simulação antes de guardar para comparar.';
+    return;
+  }
+  if (estado.comparacoes.length >= 3) {
+    estado.comparacoes.shift();
+  }
+  // cópia rasa dos objetos numéricos (sem DOM)
+  estado.comparacoes.push({
+    mod: u.mod,
+    entradas: u.entradas,
+    nParcelas: u.nParcelas,
+    r: u.r
+  });
+  $('#status-app').textContent =
+    'Cenário guardado na memória desta sessão (' + estado.comparacoes.length + '/3). Nada foi enviado a servidor.';
+  renderPainelComparacao();
 }
 
 /* ---------- eventos do wizard ---------- */
@@ -804,6 +1086,12 @@ $('#btn-voltar-1').addEventListener('click', () => irParaEtapa(1));
 $('#btn-voltar-2').addEventListener('click', () => irParaEtapa(2));
 $('#btn-nova').addEventListener('click', () => irParaEtapa(1));
 $('#btn-imprimir').addEventListener('click', () => window.print()); // PDF local via diálogo do navegador — sem upload
+$('#btn-guardar-comp').addEventListener('click', guardarComparacao);
+$('#btn-limpar-comp').addEventListener('click', () => {
+  estado.comparacoes = [];
+  renderPainelComparacao();
+  $('#status-app').textContent = 'Comparações da sessão removidas.';
+});
 
 /* ---------- tema claro/escuro ---------- */
 function aplicarTema(tema) {
