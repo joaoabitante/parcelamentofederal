@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.3.3] - 2026-07-10
+
+### Adicionado
+- Página **Sobre** (`/sobre.html`): quem é João Carlos Bueno Abitante, narrativa *give first*, links para joao.abitante.net e ecossistema.
+- Links no cabeçalho/rodapé do simulador e entrada no sitemap.
+
 ## [1.3.2] - 2026-07-10
 
 ### Adicionado
