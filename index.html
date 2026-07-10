@@ -3,43 +3,183 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Simulador gratuito e anônimo de parcelamento e reparcelamento federal: Simples Nacional, MEI, PGFN, e-CAC, IRPF. Regras CGSN/RFB, SELIC oficial. 100% no navegador — zero envio de dados.">
-<meta name="keywords" content="parcelamento federal, reparcelamento simples nacional, parcelamento MEI, PGFN, e-CAC, DAS, PGDAS-D, DASN-Simei, SELIC, multa mora, simulador tributário, CGSN 140, contador">
+<title>Parcelamento Federal: Simples, MEI e PGFN | Simulador Anônimo</title>
+<meta name="description" content="Simule parcelamento e reparcelamento de débitos federais: Simples Nacional, MEI (1ª parcela 10% ou 20%), PGFN, e-CAC e IRPF. Grátis, anônimo, SELIC do BCB — sem cadastro e sem enviar dados.">
+<meta name="keywords" content="parcelamento federal, parcelamento simples nacional, reparcelamento simples nacional, parcelamento MEI, reparcelamento MEI, parcelamento PGFN, dívida ativa União, e-CAC parcelamento, DAS parcelado, PGDAS-D, DASN-Simei, SELIC parcelamento, multa de mora 20%, CGSN 140, simulador tributário gratuito, contador">
 <meta name="author" content="João Carlos Bueno Abitante">
-<meta name="robots" content="index, follow">
+<meta name="creator" content="João Carlos Bueno Abitante · Contbit / elisaofiscal.tax">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="googlebot" content="index, follow">
 <meta name="theme-color" content="#0b5d3b">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2314b86a'/%3E%3Cstop offset='100%25' stop-color='%230b5d3b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M16 40h8v8h-8zM28 32h8v16h-8zM40 24h8v24h-8z' fill='white' opacity='.95'/%3E%3Cpath d='M16 20h32' stroke='white' stroke-width='3' stroke-linecap='round' opacity='.55'/%3E%3C/svg%3E">
+<meta name="color-scheme" content="light dark">
+<meta name="format-detection" content="telephone=no">
+<meta name="geo.region" content="BR-SP">
+<meta name="geo.placename" content="Brasil">
+<meta name="language" content="Portuguese">
+<meta name="rating" content="general">
 <link rel="canonical" href="https://parcelamento.elisaofiscal.tax/">
+<link rel="alternate" hreflang="pt-BR" href="https://parcelamento.elisaofiscal.tax/">
+<link rel="alternate" hreflang="x-default" href="https://parcelamento.elisaofiscal.tax/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2314b86a'/%3E%3Cstop offset='100%25' stop-color='%230b5d3b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M16 40h8v8h-8zM28 32h8v16h-8zM40 24h8v24h-8z' fill='white' opacity='.95'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="https://parcelamento.elisaofiscal.tax/og-image.png">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:url" content="https://parcelamento.elisaofiscal.tax/">
-<meta property="og:title" content="Parcelamento Federal — Simples, MEI, PGFN e e-CAC | anônimo">
-<meta property="og:description" content="Simule parcelamento e reparcelamento (10%/20%) do Simples e MEI, Regularize, Transação PGFN e e-CAC. Grátis, offline e sem rastreio.">
-<meta property="og:site_name" content="parcelamento.elisaofiscal.tax">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Parcelamento Federal anônimo — Simples, MEI e PGFN">
-<meta name="twitter:description" content="Simulador client-side com regras RFB/CGSN e SELIC oficial. Reparcelamento 10% ou 20%.">
-<title>Parcelamento Federal — Simples Nacional, MEI, PGFN | anônimo</title>
+<meta property="og:site_name" content="Parcelamento Federal · elisaofiscal.tax">
+<meta property="og:title" content="Parcelamento Federal: Simples, MEI e PGFN | Simulador Anônimo">
+<meta property="og:description" content="Simule parcelamento e reparcelamento (10%/20%) do Simples e MEI, Regularize/PGFN e e-CAC. Grátis, no navegador, sem rastreio.">
+<meta property="og:image" content="https://parcelamento.elisaofiscal.tax/og-image.png">
+<meta property="og:image:secure_url" content="https://parcelamento.elisaofiscal.tax/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Parcelamento Federal — simulador anônimo de Simples, MEI e PGFN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Parcelamento Federal: Simples, MEI e PGFN">
+<meta name="twitter:description" content="Simulador gratuito e anônimo com SELIC oficial. Reparcelamento 10% ou 20%.">
+<meta name="twitter:image" content="https://parcelamento.elisaofiscal.tax/og-image.png">
+<meta name="twitter:image:alt" content="Parcelamento Federal — simulador anônimo">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Parcelamento Federal — elisaofiscal.tax",
-  "url": "https://parcelamento.elisaofiscal.tax/",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Any",
-  "browserRequirements": "Requires JavaScript",
-  "inLanguage": "pt-BR",
-  "isAccessibleForFree": true,
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
-  "description": "Simulador anônimo de parcelamento e reparcelamento de tributos federais (Simples Nacional, MEI, PGFN, e-CAC, IRPF) com SELIC oficial.",
-  "author": { "@type": "Person", "name": "João Carlos Bueno Abitante", "url": "https://joao.abitante.net/" },
-  "featureList": [
-    "Parcelamento e reparcelamento Simples Nacional ME/EPP",
-    "Parcelamento e reparcelamento MEI (Simei)",
-    "Regularize e Transação PGFN",
-    "e-CAC, Lucro Presumido e quotas IRPF",
-    "Cálculo 100% no navegador sem envio de dados"
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://parcelamento.elisaofiscal.tax/#website",
+      "url": "https://parcelamento.elisaofiscal.tax/",
+      "name": "Parcelamento Federal",
+      "alternateName": ["parcelamento.elisaofiscal.tax", "Simulador de Parcelamento Federal"],
+      "description": "Simulador gratuito e anônimo de parcelamento e reparcelamento de tributos federais.",
+      "inLanguage": "pt-BR",
+      "publisher": { "@id": "https://parcelamento.elisaofiscal.tax/#person" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://parcelamento.elisaofiscal.tax/#webpage",
+      "url": "https://parcelamento.elisaofiscal.tax/",
+      "name": "Parcelamento Federal: Simples, MEI e PGFN | Simulador Anônimo",
+      "isPartOf": { "@id": "https://parcelamento.elisaofiscal.tax/#website" },
+      "about": { "@id": "https://parcelamento.elisaofiscal.tax/#app" },
+      "description": "Simule parcelamento e reparcelamento de débitos federais (Simples Nacional, MEI, PGFN, e-CAC e IRPF) com SELIC oficial, grátis e anônimo.",
+      "inLanguage": "pt-BR",
+      "dateModified": "2026-07-10",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://parcelamento.elisaofiscal.tax/og-image.png",
+        "width": 1200,
+        "height": 630
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://parcelamento.elisaofiscal.tax/#app",
+      "name": "Parcelamento Federal",
+      "url": "https://parcelamento.elisaofiscal.tax/",
+      "applicationCategory": "FinanceApplication",
+      "applicationSubCategory": "Tax calculator",
+      "operatingSystem": "Web",
+      "browserRequirements": "Requires JavaScript. Works offline after first load.",
+      "inLanguage": "pt-BR",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "BRL",
+        "availability": "https://schema.org/InStock"
+      },
+      "description": "Simulador client-side de parcelamento e reparcelamento federal: Simples Nacional, MEI, Regularize/PGFN, Transação por adesão, e-CAC, Lucro Presumido e quotas de IRPF. Multa e juros SELIC com tabela local oficial do BCB.",
+      "featureList": [
+        "Parcelamento e reparcelamento Simples Nacional (ME/EPP) — mín. R$ 300, 2 a 60 parcelas",
+        "Parcelamento e reparcelamento MEI — mín. R$ 50, 2 a 60 parcelas",
+        "1ª parcela de reparcelamento 10% ou 20% da dívida consolidada",
+        "Regularize e Transação PGFN",
+        "e-CAC, Lucro Presumido e quotas IRPF",
+        "SELIC SGS 4390 (Banco Central) embutida",
+        "100% no navegador — sem envio de dados"
+      ],
+      "author": { "@id": "https://parcelamento.elisaofiscal.tax/#person" },
+      "creator": { "@id": "https://parcelamento.elisaofiscal.tax/#person" },
+      "publisher": { "@id": "https://parcelamento.elisaofiscal.tax/#person" },
+      "image": "https://parcelamento.elisaofiscal.tax/og-image.png",
+      "screenshot": "https://parcelamento.elisaofiscal.tax/og-image.png"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://parcelamento.elisaofiscal.tax/#person",
+      "name": "João Carlos Bueno Abitante",
+      "url": "https://joao.abitante.net/",
+      "jobTitle": "Contador",
+      "sameAs": [
+        "https://joao.abitante.net/",
+        "https://contbit.tax/",
+        "https://www.linkedin.com/in/joaocarlos1",
+        "https://instagram.com/libertcontador"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://parcelamento.elisaofiscal.tax/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Elisão Fiscal",
+          "item": "https://elisaofiscal.tax/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Parcelamento Federal",
+          "item": "https://parcelamento.elisaofiscal.tax/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://parcelamento.elisaofiscal.tax/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "O que é este simulador de parcelamento federal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "É uma ferramenta gratuita e anônima que estima consolidação (principal, multa e juros SELIC) e prestações de parcelamentos federais: Simples Nacional, MEI, PGFN (Regularize e Transação), e-CAC, Lucro Presumido e quotas de IRPF. O cálculo roda só no seu navegador."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como funciona o reparcelamento do Simples Nacional e do MEI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nos manuais da Receita Federal, o reparcelamento exige 1ª parcela de 10% da dívida consolidada (se houver um parcelamento anterior) ou 20% (se houver mais de um). O valor da 1ª parcela não fica abaixo do mínimo da modalidade (R$ 300 no Simples ME/EPP e R$ 50 no MEI). O saldo é dividido nas demais prestações, até 60 no total."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "A multa de mora no Simples e no MEI é sempre 20%?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Na consolidação do parcelamento do Simples Nacional e do MEI, a Resolução CGSN nº 140/2018 (art. 53) e os manuais da RFB aplicam multa de mora no valor máximo de 20%, mesmo quando o atraso for inferior a 60 dias. Você pode editar o percentual se o valor já estiver consolidado."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Meus dados são enviados para algum servidor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não. Não há cadastro, cookies de rastreio nem requisições externas no uso. Valores e datas ficam só na memória do navegador. A tabela SELIC é atualizada no repositório (CI), não pelo seu computador em tempo real."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Este site substitui o Portal do Simples, o e-CAC ou o Regularize?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não. É simulação independente para planejamento. O pedido oficial, o DAS e o deferimento são feitos nos sistemas da Receita Federal e da PGFN."
+          }
+        }
+      ]
+    }
   ]
 }
 </script>
@@ -330,6 +470,46 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
   .cartoes { grid-template-columns: 1fr 1fr 1fr; }
 }
 
+
+/* SEO content blocks */
+.eyebrow-seo{
+  font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; font-weight:700;
+  color:var(--primaria); margin:0 0 .5rem;
+}
+.hero-seo h1{
+  margin:0 0 .55rem; font-size:clamp(1.35rem, 3.8vw, 1.85rem); line-height:1.2;
+  letter-spacing:-.02em;
+}
+.hero-seo .hero-sec{ margin:.55rem 0 0; font-size:.9rem; }
+.seo-mod-list{
+  margin:.9rem 0 0; padding:0 0 0 1.15rem; color:var(--texto-suave); font-size:.9rem;
+}
+.seo-mod-list li{ margin:.28rem 0; }
+.seo-mod-list strong{ color:var(--texto); }
+.seo-block{
+  margin:2rem 0 0; padding:1.2rem 1.15rem;
+  background:var(--superficie); border:1px solid var(--borda);
+  border-radius:.9rem; box-shadow:var(--sombra);
+}
+.seo-block h2{ margin:0 0 .75rem; font-size:1.15rem; }
+.seo-steps{ margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+.seo-steps li{ margin:.4rem 0; }
+.faq-list details{
+  border:1px solid var(--borda); border-radius:.55rem; padding:.55rem .8rem;
+  margin:0 0 .5rem; background:var(--fundo);
+}
+.faq-list summary{
+  cursor:pointer; font-weight:700; color:var(--texto); list-style:none;
+}
+.faq-list summary::-webkit-details-marker{ display:none; }
+.faq-list details p{ margin:.45rem 0 0; color:var(--texto-suave); font-size:.92rem; }
+.seo-disclaimer p{ margin:0; color:var(--texto-suave); font-size:.9rem; }
+.seo-foot-links{ margin:.2rem 0 .6rem; }
+.seo-foot-links a{ margin-right:.15rem; }
+@media print{
+  .filtro-modulos, .seo-block{ break-inside:avoid; }
+}
+
 /* ============ impressão ============ */
 @media print {
   header.topo .acoes-topo, .passos, .selo, .acoes, .barra-disclaimer,
@@ -370,7 +550,7 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
       <path d="M38.8 13.9l1.35 1.35 2.75-2.9" fill="none" stroke="#0a4a30" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <div class="marca-texto">
-      <h1 class="nome-app">parcelamento<span class="hl">.elisaofiscal.tax</span></h1>
+      <p class="nome-app">parcelamento<span class="hl">.elisaofiscal.tax</span></p>
       <p class="tagline">Parcelamento e reparcelamento federal · Simples, MEI, PGFN</p>
     </div>
   </a>
@@ -396,11 +576,20 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
   <!-- ETAPA 1: escolher módulo -->
   <section id="etapa-1" aria-labelledby="titulo-etapa-1">
     <div class="hero-seo">
-      <h2 id="titulo-etapa-1">Simule parcelamento e reparcelamento federal</h2>
-      <p>Ferramenta para contadores e contribuintes: <strong>Simples Nacional</strong>, <strong>MEI</strong> (com reparcelamento 10% ou 20%), <strong>PGFN</strong>, <strong>e-CAC</strong>, Lucro Presumido e quotas de IRPF. Cálculo com SELIC local e regras da RFB/CGSN — tudo no seu navegador, sem cadastro.</p>
-      <div class="chips" aria-hidden="true">
-        <span>Anônimo</span><span>Reparcelamento SN/MEI</span><span>SELIC BCB</span><span>Sem cookies</span>
+      <p class="eyebrow-seo">Simulador gratuito · RFB / PGFN / CGSN</p>
+      <h1 id="titulo-etapa-1">Parcelamento federal: Simples Nacional, MEI e PGFN</h1>
+      <p>Calcule <strong>parcelamento</strong> e <strong>reparcelamento</strong> de débitos federais com multa, juros SELIC e prestações — para <strong>contadores</strong> e contribuintes. Inclui <strong>Simples Nacional (ME/EPP)</strong>, <strong>MEI</strong> (1ª parcela 10% ou 20%), <strong>Regularize/PGFN</strong>, <strong>Transação</strong>, <strong>e-CAC</strong>, Lucro Presumido e quotas de <strong>IRPF</strong>.</p>
+      <p class="hero-sec">100% no navegador: sem cadastro, sem cookies de rastreio e sem enviar valor de débito a servidor. A tabela SELIC segue a série oficial do Banco Central (SGS 4390), embutida no site.</p>
+      <div class="chips" aria-label="Destaques">
+        <span>Anônimo</span><span>Reparcelamento 10%/20%</span><span>SELIC BCB</span><span>Sem cookies</span><span>Grátis</span>
       </div>
+      <ul class="seo-mod-list">
+        <li><strong>Simples Nacional</strong> — 2 a 60 parcelas, mínima R$&nbsp;300 (Res. CGSN 140 / Manual RFB)</li>
+        <li><strong>MEI (Simei)</strong> — 2 a 60 parcelas, mínima R$&nbsp;50; condição DASN-Simei</li>
+        <li><strong>Reparcelamento</strong> — 1ª parcela 10% ou 20% da consolidada (piso da modalidade)</li>
+        <li><strong>PGFN</strong> — Regularize e Transação por adesão (entrada + desconto)</li>
+        <li><strong>e-CAC / IRPF</strong> — débitos correntes e quotas da declaração</li>
+      </ul>
     </div>
     <div class="filtro-modulos nao-imprimir" role="group" aria-label="Filtrar modalidades">
       <button type="button" data-filtro="todos" aria-pressed="true">Todos</button>
@@ -445,6 +634,48 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
       <button type="button" id="btn-nova">Nova simulação</button>
     </div>
   </section>
+
+  <!-- Conteúdo indexável (SEO) — visível e sem JS -->
+  <section id="como-funciona" class="seo-block" aria-labelledby="titulo-como">
+    <h2 id="titulo-como">Como simular o parcelamento em 3 passos</h2>
+    <ol class="seo-steps">
+      <li><strong>Escolha a modalidade</strong> — Simples, MEI, PGFN, e-CAC ou IRPF.</li>
+      <li><strong>Informe o débito</strong> — valor original, vencimento e, se for o caso, reparcelamento 10% ou 20%.</li>
+      <li><strong>Veja o resultado</strong> — consolidação, tabela de prestações com SELIC e comparativo de prazos. Imprima em PDF local se quiser.</li>
+    </ol>
+  </section>
+
+  <section id="faq" class="seo-block" aria-labelledby="titulo-faq">
+    <h2 id="titulo-faq">Perguntas frequentes sobre parcelamento federal</h2>
+    <div class="faq-list">
+      <details open>
+        <summary>O que é este simulador de parcelamento federal?</summary>
+        <p>Ferramenta <strong>gratuita e anônima</strong> que estima consolidação (principal, multa e juros SELIC) e prestações de parcelamentos federais: Simples Nacional, MEI, PGFN (Regularize e Transação), e-CAC, Lucro Presumido e quotas de IRPF. O cálculo roda <strong>só no seu navegador</strong>.</p>
+      </details>
+      <details>
+        <summary>Como funciona o reparcelamento do Simples Nacional e do MEI?</summary>
+        <p>Nos manuais da Receita Federal, a 1ª parcela do reparcelamento é de <strong>10%</strong> da dívida consolidada (um parcelamento anterior) ou <strong>20%</strong> (mais de um). Esse valor não fica abaixo do mínimo da modalidade (R$&nbsp;300 no Simples ME/EPP e R$&nbsp;50 no MEI). O saldo vai para as demais prestações, no máximo <strong>60</strong> no total.</p>
+      </details>
+      <details>
+        <summary>A multa de mora no Simples e no MEI é sempre 20%?</summary>
+        <p>Na consolidação do parcelamento, a <strong>Resolução CGSN nº 140/2018 (art. 53)</strong> e os manuais da RFB usam multa no teto de <strong>20%</strong>, mesmo com atraso inferior a 60 dias. O campo é editável se o valor já vier consolidado do sistema oficial.</p>
+      </details>
+      <details>
+        <summary>Meus dados são enviados para algum servidor?</summary>
+        <p><strong>Não.</strong> Sem cadastro, sem analytics e sem requisições externas no uso. Valores e datas ficam na memória da aba. A SELIC é atualizada no repositório (CI mensal), não pelo seu aparelho a cada simulação.</p>
+      </details>
+      <details>
+        <summary>Este site substitui o Portal do Simples, o e-CAC ou o Regularize?</summary>
+        <p><strong>Não.</strong> É simulação independente para planejamento. Pedido oficial, DAS e deferimento são feitos nos sistemas da RFB e da PGFN.</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="aviso-legal-seo" class="seo-block seo-disclaimer" aria-labelledby="titulo-aviso-seo">
+    <h2 id="titulo-aviso-seo">Aviso importante</h2>
+    <p>Os resultados são <strong>estimativas</strong> com base em regras públicas (LC 123, Res. CGSN 140, manuais RFB, Lei 9.430/96, Lei 10.522/2002 e editais PGFN, conforme o módulo). Normas e valores mínimos mudam — confira sempre o sistema oficial antes de decidir.</p>
+  </section>
+
 </main>
 
 <div class="barra-disclaimer" role="note">
@@ -459,6 +690,13 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
       <a href="#" id="link-selic">📈 Ver tabela SELIC local</a> ·
       <a href="#" id="link-log">📋 <span id="versao-app"></span> · atualizações</a> ·
       <a href="https://livetip.gg/libertcontador" target="_blank" rel="noopener noreferrer">☕ Apoie via LiveTip</a>
+    </p>
+    <p class="seo-foot-links">
+      <a href="#como-funciona">Como funciona</a> ·
+      <a href="#faq">Perguntas frequentes</a> ·
+      <a href="https://elisaofiscal.tax/" rel="noopener noreferrer">Elisão Fiscal</a> ·
+      <a href="https://contbit.tax/" rel="noopener noreferrer">Contbit</a> ·
+      <a href="https://joao.abitante.net/" rel="noopener noreferrer">João Abitante</a>
     </p>
     <p>Feito para pessoas físicas e contadores. Código aberto para auditoria — sem cookies, sem analytics, sem rede.</p>
   </div>
@@ -507,10 +745,15 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
  * flutuante; percentuais só viram centavos com Math.round no final.
  * ===================================================================== */
 
-const APP_VERSAO = '1.3.1';
+const APP_VERSAO = '1.3.2';
 const CHAVE_TEMA = 'elisao.tema';
 const CHAVE_ULTIMO = 'elisao.ultimo-modulo';
 const CHANGELOG = [
+  {
+    versao: '1.3.2', data: '2026-07-10', itens: [
+      'SEO: title/description, Open Graph com imagem, JSON-LD (WebSite, SoftwareApplication, FAQPage), FAQ e conteúdo indexável no HTML.',
+    ]
+  },
   {
     versao: '1.3.1', data: '2026-07-10', itens: [
       'Identidade visual: logo SVG no cabeçalho (ícone de parcelas + wordmark) e favicon embutido.',

@@ -2,6 +2,13 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.3.2] - 2026-07-10
+
+### Adicionado
+- SEO avançado: title/description otimizados, `og:image` (1200×630), Twitter large image, JSON-LD em grafo (WebSite, WebPage, SoftwareApplication, Person, BreadcrumbList, FAQPage).
+- Conteúdo indexável no HTML: H1 principal, lista de modalidades, como funciona (3 passos), FAQ com `<details>`, links internos no rodapé.
+- `hreflang`, `apple-touch-icon`, `sitemap.xml` com `lastmod`, robots com Host.
+
 ## [1.3.1] - 2026-07-10
 
 ### Adicionado

@@ -1,3 +1,7 @@
 User-agent: *
 Allow: /
+
+# Prefer canonical host
+Host: https://parcelamento.elisaofiscal.tax
+
 Sitemap: https://parcelamento.elisaofiscal.tax/sitemap.xml
