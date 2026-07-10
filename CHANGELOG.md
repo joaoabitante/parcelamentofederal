@@ -2,6 +2,11 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.3.1] - 2026-07-10
+
+### Adicionado
+- Identidade visual no cabeçalho: **logo SVG** (ícone de parcelas + wordmark `parcelamento.elisaofiscal.tax`) e **favicon** embutido em data-URI — sem rede, adapta ao tema.
+
 ## [1.3.0] - 2026-07-10
 
 ### Adicionado
