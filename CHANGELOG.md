@@ -1,6 +1,12 @@
-# Changelog — elisaofiscal.tax
+# Changelog — parcelamentofederal (parcelamento.elisaofiscal.tax)
 
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
+
+## [1.0.1] - 2026-07-10
+
+### Alterado
+- Projeto renomeado para `parcelamentofederal`; publicado no GitHub com domínio oficial `parcelamento.elisaofiscal.tax` (Cloudflare).
+- README com instruções de publicação (estático puro, sem build).
 
 ## [1.0.0] - 2026-07-10
 

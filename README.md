@@ -1,4 +1,6 @@
-# elisaofiscal.tax
+# parcelamentofederal
+
+**Site:** [parcelamento.elisaofiscal.tax](https://parcelamento.elisaofiscal.tax) (Cloudflare)
 
 Simulador **gratuito, 100% anônimo e client-side** de parcelamentos de tributos federais, para pessoas físicas e contadores:
 
@@ -14,7 +16,11 @@ Nenhuma chamada de rede além do carregamento dos arquivos estáticos. Sem cooki
 
 ## Como usar
 
-Abra o `index.html` direto no navegador (duplo clique) — não precisa de servidor nem de internet. Ou hospede a pasta em qualquer serviço estático.
+Abra o `index.html` direto no navegador (duplo clique) — não precisa de servidor nem de internet. Ou acesse a versão hospedada em [parcelamento.elisaofiscal.tax](https://parcelamento.elisaofiscal.tax).
+
+## Publicação (Cloudflare)
+
+O site é 100% estático, sem build step: basta conectar este repositório do GitHub ao Cloudflare (Workers/Pages com assets estáticos, mesmo modelo do premio.elisaofiscal.net), servindo a raiz do repo, e vincular o domínio customizado `parcelamento.elisaofiscal.tax`. Nenhuma variável de ambiente, nenhum comando de build.
 
 ## Atualizando a taxa SELIC
 
