@@ -13,3 +13,6 @@ node_modules/
 # segredos (não deve haver — projeto não usa credenciais)
 .env
 .env.*
+
+.vercel
+.env*
