@@ -2,6 +2,6 @@ User-agent: *
 Allow: /
 
 # Prefer canonical host
-Host: https://parcelamento.elisaofiscal.tax
+Host: https://parcelamento.contbit.tax
 
-Sitemap: https://parcelamento.elisaofiscal.tax/sitemap.xml
+Sitemap: https://parcelamento.contbit.tax/sitemap.xml

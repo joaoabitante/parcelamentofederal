@@ -1,4 +1,4 @@
-# Changelog — parcelamentofederal (parcelamento.elisaofiscal.tax)
+# Changelog — parcelamentofederal (parcelamento.contbit.tax)
 
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
@@ -18,7 +18,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · Versiona
 ## [1.3.1] - 2026-07-10
 
 ### Adicionado
-- Identidade visual no cabeçalho: **logo SVG** (ícone de parcelas + wordmark `parcelamento.elisaofiscal.tax`) e **favicon** embutido em data-URI — sem rede, adapta ao tema.
+- Identidade visual no cabeçalho: **logo SVG** (ícone de parcelas + wordmark `parcelamento.contbit.tax`) e **favicon** embutido em data-URI — sem rede, adapta ao tema.
 
 ## [1.3.0] - 2026-07-10
 
@@ -41,7 +41,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · Versiona
 ### Adicionado
 - Módulo **Transação PGFN · adesão**: entrada (%) sobre consolidado sem desconto, desconto sobre encargos com teto por perfil (65% / 70%), parcelas de entrada e saldo em até 60× com SELIC.
 - Comparar até **3 simulações na sessão** (memória do navegador — sem localStorage de valores, sem rede).
-- Badge «novo» no cartão da transação; marca alinhada a `parcelamento.elisaofiscal.tax`.
+- Badge «novo» no cartão da transação; marca alinhada a `parcelamento.contbit.tax`.
 
 ### Alterado
 - Motor de cálculo compartilhado aceita `modoTransacao` (entrada, desconto, offset de meses do saldo após a entrada).
@@ -66,7 +66,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · Versiona
 ## [1.0.1] - 2026-07-10
 
 ### Alterado
-- Projeto renomeado para `parcelamentofederal`; publicado no GitHub com domínio oficial `parcelamento.elisaofiscal.tax` (Cloudflare).
+- Projeto renomeado para `parcelamentofederal`; publicado no GitHub com domínio oficial `parcelamento.contbit.tax` (Cloudflare).
 - README com instruções de publicação (estático puro, sem build).
 
 ## [1.0.0] - 2026-07-10

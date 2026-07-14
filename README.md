@@ -1,6 +1,6 @@
 # parcelamentofederal
 
-**Site:** [parcelamento.elisaofiscal.tax](https://parcelamento.elisaofiscal.tax) (Cloudflare)
+**Site:** [parcelamento.contbit.tax](https://parcelamento.contbit.tax) (Vercel)
 
 Simulador **gratuito, 100% anônimo e client-side** de parcelamentos de tributos federais, para pessoas físicas e contadores:
 
@@ -18,15 +18,15 @@ Nenhuma chamada de rede além do carregamento dos arquivos estáticos. Sem cooki
 
 ## Como usar
 
-Abra o `index.html` direto no navegador (duplo clique) — não precisa de servidor nem de internet. Ou acesse a versão hospedada em [parcelamento.elisaofiscal.tax](https://parcelamento.elisaofiscal.tax).
+Abra o `index.html` direto no navegador (duplo clique) — não precisa de servidor nem de internet. Ou acesse a versão hospedada em [parcelamento.contbit.tax](https://parcelamento.contbit.tax).
 
-## Publicação (Cloudflare)
+## Publicação (Vercel)
 
-O site é 100% estático, sem build step: basta conectar este repositório do GitHub ao Cloudflare (Workers/Pages com assets estáticos, mesmo modelo do premio.elisaofiscal.net), servindo a raiz do repo, e vincular o domínio customizado `parcelamento.elisaofiscal.tax`. Nenhuma variável de ambiente, nenhum comando de build.
+O site é 100% estático, sem build step: o repositório `joaoabitante/parcelamentofederal` está no projeto Vercel `contbittax/parcelamentofederal`, com domínio customizado `parcelamento.contbit.tax`. Nenhuma variável de ambiente, nenhum comando de build.
 
 ## Taxa SELIC: oficial e automática
 
-A única "base de dados" é [data/selic-tabela.js](data/selic-tabela.js), **gerada automaticamente** (não editar à mão): nos dias 3 e 10 de cada mês, o GitHub Actions ([atualizar-selic.yml](.github/workflows/atualizar-selic.yml)) executa [scripts/atualizar-selic.mjs](scripts/atualizar-selic.mjs), que busca a série oficial **SGS 4390** na API de dados abertos do Banco Central, valida os dados (fail-closed) e commita a tabela regenerada — o Cloudflare redeploya sozinho.
+A única "base de dados" é [data/selic-tabela.js](data/selic-tabela.js), **gerada automaticamente** (não editar à mão): nos dias 3 e 10 de cada mês, o GitHub Actions ([atualizar-selic.yml](.github/workflows/atualizar-selic.yml)) executa [scripts/atualizar-selic.mjs](scripts/atualizar-selic.mjs), que busca a série oficial **SGS 4390** na API de dados abertos do Banco Central, valida os dados (fail-closed) e commita a tabela regenerada — o Vercel redeploya sozinho.
 
 **Isso não quebra o anonimato:** quem consulta o BCB é o robô de CI, uma vez por mês. O navegador de quem usa o site continua sem fazer nenhuma requisição externa.
 

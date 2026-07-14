@@ -1,4 +1,4 @@
-# DEV-LOG — parcelamentofederal (parcelamento.elisaofiscal.tax)
+# DEV-LOG — parcelamentofederal (parcelamento.contbit.tax)
 
 ## 2026-07-10 - SEO/UI + reparcelamento SN/MEI (v1.3.0)
 
@@ -52,20 +52,20 @@
 
 ### Pendências
 - Após o push, conferir na aba Actions do GitHub se o workflow aparece e rodar um `workflow_dispatch` de teste.
-- Conectar o repo no Cloudflare e vincular `parcelamento.elisaofiscal.tax` (ação humana, pendente da v1.0.1).
+- Conectar o repo no Cloudflare e vincular `parcelamento.contbit.tax` (ação humana, pendente da v1.0.1).
 
 ## 2026-07-10 - Publicação (v1.0.1)
 
 ### Alterado
 - Pasta local e projeto renomeados de `elisaofiscal-tax` para `parcelamentofederal`.
-- Repo publicado no GitHub (`joaoabitante/parcelamentofederal`); domínio definido: `parcelamento.elisaofiscal.tax` no Cloudflare.
+- Repo publicado no GitHub (`joaoabitante/parcelamentofederal`); domínio definido: `parcelamento.contbit.tax` no Cloudflare.
 - README com seção de publicação; versão exibida na UI bumpada para 1.0.1.
 
 ### Decisões técnicas
 - Deploy sem build step: Cloudflare servindo os assets estáticos direto do repo (mesmo modelo do premio.elisaofiscal.net).
 
 ### Pendências
-- Conectar o repo no painel do Cloudflare e vincular o domínio `parcelamento.elisaofiscal.tax` (ação humana, requer login).
+- Conectar o repo no painel do Cloudflare e vincular o domínio `parcelamento.contbit.tax` (ação humana, requer login).
 - Pendências da v1.0.0 abaixo continuam valendo (SELIC provisória etc.).
 
 ## 2026-07-10 - Projeto completo (v1.0.0: shell + 5 módulos + libs)
