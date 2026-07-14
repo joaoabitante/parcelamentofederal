@@ -26,3 +26,7 @@ wrangler.json
 wrangler.jsonc
 .dev.vars
 >>>>>>> 78621f6b5eafdb58e90f0860ad38e5e2b7fc3360
+
+.dev.vars*
+!.dev.vars.example
+!.env.example
