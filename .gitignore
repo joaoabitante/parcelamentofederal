@@ -14,5 +14,15 @@ node_modules/
 .env
 .env.*
 
+<<<<<<< HEAD
 .vercel
 .env*
+=======
+# Cloudflare desativado - plataforma: Vercel
+.wrangler/
+.mf/
+wrangler.toml
+wrangler.json
+wrangler.jsonc
+.dev.vars
+>>>>>>> 78621f6b5eafdb58e90f0860ad38e5e2b7fc3360
