@@ -15,7 +15,7 @@
 window.SELIC_TABELA = {
   meta: {
     fonte: 'Banco Central do Brasil — API de dados abertos, série SGS 4390 (Selic acumulada no mês)',
-    atualizadoEm: "2026-09-03",
+    atualizadoEm: "2026-09-10",
     observacao: 'Tabela gerada automaticamente a partir da API oficial do BCB. ' +
       'Cobre de janeiro/1995 até o último mês fechado; o mês corrente é ' +
       'excluído por ser acumulado parcial.'
