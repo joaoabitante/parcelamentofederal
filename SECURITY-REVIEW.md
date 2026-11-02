@@ -56,6 +56,11 @@ Checklist de revisão (perspectiva de dev sênior). Qualquer ❌ bloqueia releas
 - ✅ **Fonte/data da tabela SELIC exibida** — no rodapé e em todo resultado (aviso com data de atualização); modal "Ver tabela SELIC local" mostra todos os valores.
 - ✅ **Botão "Limpar dados locais" funcional e visível** — no topo de todas as telas; informa exatamente o que era guardado.
 
+## Adendo 2026-11-02 — cabeçalhos HTTP
+
+- ✅ **Cabeçalhos de segurança enviados pelo servidor** — `vercel.json` aplica CSP (`frame-ancestors 'none'`, `object-src 'none'`, `base-uri 'self'`, `form-action 'self'`), HSTS com preload, nosniff, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, Permissions-Policy (sensores, pagamento e APIs de perfilamento desligados) e COOP/CORP. Antes, a Vercel respondia só com HSTS.
+- ✅ **Referrer** — `<meta name="referrer" content="no-referrer">` nas duas páginas, reforçando o cabeçalho.
+
 ## Veredicto
 
 **Liberado para uso local/desenvolvimento.** Release público condicionado às pendências ⚠️ de conferência da tabela SELIC e dos valores mínimos vigentes (ver DEV-LOG.md).
