@@ -1,5 +1,15 @@
 # DEV-LOG — parcelamentofederal (parcelamento.contbit.tax)
 
+## 2026-11-02 - Cabeçalhos HTTP de segurança (v1.3.4)
+
+### Adicionado
+- `vercel.json` com CSP, HSTS, nosniff, X-Frame-Options, Referrer-Policy, Permissions-Policy e COOP/CORP. A CSP repete o que a página já usa (scripts e estilos próprios, inline permitido, imagens `data:`), mais `frame-ancestors 'none'` e `object-src 'none'`.
+- `<meta name="referrer" content="no-referrer">` nas duas páginas.
+
+### Decisões técnicas
+- `script-src 'self' 'unsafe-inline'` porque o `index.html` tem dois blocos de script inline; os módulos em `lib/`, `modules/` e `data/` são da própria origem.
+- `connect-src 'self'`: a página não faz requisição em runtime; a SELIC chega por arquivo estático gerado pela Action.
+
 ## 2026-07-10 - SEO/UI + reparcelamento SN/MEI (v1.3.0)
 
 ### Adicionado

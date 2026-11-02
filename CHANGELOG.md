@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · Versionamento: [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.3.4] - 2026-11-02
+
+### Segurança
+- `vercel.json` com os cabeçalhos HTTP: CSP (`frame-ancestors 'none'`, `object-src 'none'`, só origem própria), HSTS, nosniff, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, Permissions-Policy, COOP/CORP. Até aqui o site no ar respondia só com o HSTS padrão da Vercel.
+- `<meta name="referrer" content="no-referrer">` em `index.html` e `sobre.html`.
+
 ## [1.3.3] - 2026-07-10
 
 ### Adicionado

@@ -3,13 +3,13 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://parcelamento.contbit.tax/</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://parcelamento.contbit.tax/sobre.html</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
